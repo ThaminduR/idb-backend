@@ -12,7 +12,6 @@ exports.login = async function (req, res) {
 
     try {
         results = await db.query(query, [username])
-        console.log("LOL")
     } catch (err) {
         res.send({
             "code": 400,
@@ -21,7 +20,7 @@ exports.login = async function (req, res) {
         return
     }
     if (results.length > 0) {
-        hash = await bcrypt.compare(password, results[0].hpassword)
+        hash = await bcrypt.compare(password, results[0].password)
         if (hash) {
 
             user = {
@@ -33,6 +32,7 @@ exports.login = async function (req, res) {
             })
 
             res.cookie("authtoken", accessToken, { httpOnly: true })
+            res.cookie("username", username)
             res.send({ "code": 200, "message": "Logging successful" })
 
         } else {
@@ -50,10 +50,7 @@ exports.login = async function (req, res) {
 }
 
 exports.logout = function (req, res) {
-    authtoken = req.cookies['authtoken']
-    client = req.redis
-    decoded = jwt.verify(authtoken, process.env.JWTSECRET)
-    client.del(decoded.username);
-    res.cookie('authtoken', { maxAge: Date.now() })
+    res.clearCookie('authtoken')
+    res.clearCookie('username')
     res.send({ "code": 200, "message": "Logged Out" })
 }
