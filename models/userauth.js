@@ -9,6 +9,7 @@ exports.login = async function (req, res) {
     username = req.body.username
     password = req.body.password
     query = 'SELECT * FROM login_details WHERE username = ?'
+    
 
     try {
         results = await db.query(query, [username])

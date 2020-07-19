@@ -2,22 +2,54 @@ const database = require('../config/db')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
 
-exports.test = function (req, res) {
-    console.log('Route Response')
-    res.send({
-        'code': 200,
-        'message': "Success"
-    })
-}
 
-
-
-
-//function to print company data
+//function to fill company data
 
 exports.getCompanyData = async function (req, res) {
-    query = "SELECT id FROM company WHERE name=?"
-    name = req.body.company_name
+    db=new database()
+
+    query1 = "SELECT name FROM company WHERE name=?"
+    query2=""
+    
+    try{
+        companyName = req.body.companyName
+        name=await db.query(query1,[companyName])
+        
+    }catch(error){
+        console.log("error")
+    }
+    if(name){
+        console.log("Company already exists in database")
+    }
+    else{
+        companyName = req.body.companyName,
+        province=req.body.province,
+        district=req.body.district,
+        dsDivision=req.body.dsDivision,
+        gnDivision=req.body.gnDivision,
+        latitiude=req.body.latitiude,
+        longitude=req.body.longitude,
+        address=req.body.address,
+        telenumber=req.body.telenumber,
+        fax=req.body.fax,
+        website=req.body.website,
+        proprietor=req.body.proprietor,
+        turnover=req.body.turnover,
+        employees=req.body.employees,
+        yoe=req.body.yoe,
+        business_type=req.body.business_type,
+        reg_no=req.body.reg_no,
+        industry_reg=req.body.industry_reg,
+        industry_reg_no=req.body.industry_reg_no
+
+
+
+
+
+    }
+   
+    
+    
     try {
         result = await db.query(query, [name])
         res.render('company/info.jsx', {
