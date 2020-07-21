@@ -9,7 +9,7 @@ exports.getCompanyData = async function (req, res) {
     db=new database()
 
     query1 = "SELECT name FROM company WHERE name=?"
-    query= "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    query= "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     
     try{
         companyName = req.body.companyName
@@ -28,7 +28,7 @@ exports.getCompanyData = async function (req, res) {
         district=req.body.district,
         dsDivision=req.body.dsDivision,
         gnDivision=req.body.gnDivision,
-        latitiude=req.body.latitiude,
+        latitiude=req.body.latitude,
         longitude=req.body.longitude,
         address=req.body.address,
         email=req.body.email,
