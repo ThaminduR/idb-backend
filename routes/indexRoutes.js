@@ -8,6 +8,6 @@ router.post('/login', [middleware.notloggedin], (req, res) => { auth.login(req, 
 // router.post('/register', middleware.notloggedin, (req, res) => { auth.register(req, res) })
 router.get('/logout', [middleware.verifytoken], (req, res) => { auth.logout(req, res) })
 
-router.use('/user', userrouter)
+router.use('/admin', userrouter)
 
 module.exports = router;
