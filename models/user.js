@@ -9,7 +9,7 @@ exports.getCompanyData = async function (req, res) {
 
     try {
         db = new database();
-        db.connect();
+        // db.connect();
     } catch (error) {
         console.log(error);
     }
@@ -95,7 +95,7 @@ exports.getCompanyData = async function (req, res) {
 
 
         /* Begin transaction */
-        db.beginTransaction(function (err) {
+        db.connection.beginTransaction(function (err) {
             if (err) { throw err; }
 
             try {
@@ -265,7 +265,7 @@ exports.getCompanyData = async function (req, res) {
             }
 
 
-            db.commit(function (err) {
+            db.connection.commit(function (err) {
                 if (err) {
                     db.rollback(function () {
                         throw err;
