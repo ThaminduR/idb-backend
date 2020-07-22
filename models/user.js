@@ -9,7 +9,7 @@ exports.getCompanyData = async function (req, res) {
 
     try {
         db = new database();
-        db.connect();
+        
     } catch (error) {
         console.log(error);
     }
