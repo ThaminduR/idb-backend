@@ -98,14 +98,14 @@ exports.getCompanyData = async function (req, res) {
         db.connection.beginTransaction(function (err) {
             if (err) { throw err; }
 
-            try {
-                db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitiude, longitude, address, telenumber, email, fax, website, turnover, employees,
-                    yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
-                    total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, site_type, interviewer, yoi])
+            // try {
+            //     db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitiude, longitude, address, telenumber, email, fax, website, turnover, employees,
+            //         yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
+            //         total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, site_type, interviewer, yoi])
 
-            } catch (error) {
-                console.log(error)
-            }
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
             try {
                 companyid = db.query(query3, [companyName])
@@ -114,7 +114,7 @@ exports.getCompanyData = async function (req, res) {
                 console.log(error)
             }
 
-
+            
             try {
                 for (let index = 0; index < proprietor.length; index++) {
                     const element = proprietor[index];
@@ -127,142 +127,142 @@ exports.getCompanyData = async function (req, res) {
             }
 
 
-            try {
-                for (let index = 0; index < furnace_capacity.length; index++) {
-                    const element = furnace_capacity[index];
-                    db.query(query5, [companyid, element.metal, element.melting, element.heating])
+            // try {
+            //     for (let index = 0; index < furnace_capacity.length; index++) {
+            //         const element = furnace_capacity[index];
+            //         db.query(query5, [companyid, element.metal, element.melting, element.heating])
 
 
-                }
+            //     }
 
-            } catch (error) {
-                console.log(error)
-            }
-
-
-            try {
-                for (let index = 0; index < machinery.length; index++) {
-                    const element = furnace_capacity[index];
-                    db.query(query6, [companyid, element.type, element.capacity, element.value])
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
 
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < furnaces.length; index++) {
-                    const element = furnaces[index];
-                    db.query(query7, [companyid, element.name, element.fuel])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
+            // try {
+            //     for (let index = 0; index < machinery.length; index++) {
+            //         const element = furnace_capacity[index];
+            //         db.query(query6, [companyid, element.type, element.capacity, element.value])
 
 
-            try {
-                for (let index = 0; index < metal_processing.length; index++) {
-                    const element = metal_processing[index];
-                    db.query(query8, [companyid, element.metal, element.melting, element.heating, element.temp])
+            //     }
 
-                }
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
-            } catch (error) {
-                console.log(error)
-            }
+            // try {
+            //     for (let index = 0; index < furnaces.length; index++) {
+            //         const element = furnaces[index];
+            //         db.query(query7, [companyid, element.name, element.fuel])
 
-            try {
-                for (let index = 0; index < raw_materials.length; index++) {
-                    const element = raw_materials[index];
-                    db.query(query9, [companyid, element.metal, element.origin, element.state, element.amount])
+            //     }
 
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < emp_details.length; index++) {
-                    const element = emp_details[index];
-                    db.query(query10, [companyid, element.type, element.local, element.foreign])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < products.length; index++) {
-                    const element = products[index];
-                    db.query(query11, [companyid, element.name, element.state, element.units, element.weight])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < markets.length; index++) {
-                    const element = markets[index];
-                    db.query(query12, [companyid, element.local_retail, element.local_companies, element.export])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < other_markets.length; index++) {
-                    const element = other_markets[index];
-                    db.query(query13, [companyid, element.name, element.percentage])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-
-                db.query(query14, [companyid, "2016-2017", annual_turnover.y2016_2017])
-                db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
-                db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
 
+            // try {
+            //     for (let index = 0; index < metal_processing.length; index++) {
+            //         const element = metal_processing[index];
+            //         db.query(query8, [companyid, element.metal, element.melting, element.heating, element.temp])
 
-            } catch (error) {
-                console.log(error)
-            }
+            //     }
 
-            try {
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
-                db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
+            // try {
+            //     for (let index = 0; index < raw_materials.length; index++) {
+            //         const element = raw_materials[index];
+            //         db.query(query9, [companyid, element.metal, element.origin, element.state, element.amount])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < emp_details.length; index++) {
+            //         const element = emp_details[index];
+            //         db.query(query10, [companyid, element.type, element.local, element.foreign])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < products.length; index++) {
+            //         const element = products[index];
+            //         db.query(query11, [companyid, element.name, element.state, element.units, element.weight])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < markets.length; index++) {
+            //         const element = markets[index];
+            //         db.query(query12, [companyid, element.local_retail, element.local_companies, element.export])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < other_markets.length; index++) {
+            //         const element = other_markets[index];
+            //         db.query(query13, [companyid, element.name, element.percentage])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+
+            //     db.query(query14, [companyid, "2016-2017", annual_turnover.y2016_2017])
+            //     db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
+            //     db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
 
 
 
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
-            } catch (error) {
-                console.log(error)
-            }
+            // try {
 
-            try {
-                for (let index = 0; index < waste_generated.length; index++) {
-                    const element = waste_generated[index];
-                    db.query(query16, [companyid, element.type, element.amount, element.disposal])
+            //     db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
 
-                }
 
-            } catch (error) {
-                console.log(error)
-            }
+
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < waste_generated.length; index++) {
+            //         const element = waste_generated[index];
+            //         db.query(query16, [companyid, element.type, element.amount, element.disposal])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
 
             db.connection.commit(function (err) {
@@ -272,7 +272,7 @@ exports.getCompanyData = async function (req, res) {
                     });
                 }
                 console.log('Transaction Completed Successfully.');
-                db.end();
+                db.connection.end();
             });
         });
     }
