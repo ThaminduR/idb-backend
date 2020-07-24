@@ -11,6 +11,7 @@ exports.verifytoken = function (req, res, next) {
                 "code": 401,
                 "failure": "Unauthorized Access"
             })
+            return
         } else {
             next()
         }
