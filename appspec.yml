@@ -3,8 +3,7 @@ os: linux
 files:
   - source: ./
     destination: /home/ubuntu/idb/idb-backend
-hookd:
+hooks:
   AfterInstall:
     - location: Scripts/mvenv.sh
       timeout: 10
-      runas: root 
