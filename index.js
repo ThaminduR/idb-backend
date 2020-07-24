@@ -3,29 +3,28 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 var cookieParser = require('cookie-parser')
-var cors = require('cors')
+// var cors = require('cors')
 
 require('dotenv').config()
 
 const port = process.env.PORT
-const address = process.env.address
+const address = process.env.SERVER_ADDRESS
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-const corsOptions = {
-    origin: [
-        "http://localhost:3000",
-        "http://127.0.0.1",
-    ],
-    credentials: true,
-    exposedHeaders: ["set-cookie"],
-}
+// const corsOptions = {
+//     origin: [
+//         "http://localhost:3000",
+//         "http://127.0.0.1",
+//     ],
+//     credentials: true,
+//     exposedHeaders: ["set-cookie"],
+// }
 
-app.use(cors(corsOptions))
-
+// app.use(cors(corsOptions))
 
 
 const index = require('./routes/indexRoutes')

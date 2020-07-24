@@ -3,10 +3,10 @@ var mysql = require('mysql')
 class Database {
     constructor() {
         this.connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'idb'
+            host: process.env.DBHOST,
+            user: process.env.DBUSER,
+            password: process.env.DBPASSWORD,
+            database: process.env.DBNAME
         });
     }
 
