@@ -17,7 +17,7 @@ exports.getCompanyData = async function (req, res) {
     query1 = "SELECT name FROM company WHERE name=?"
     query2 = "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     query3 = "SELECT id FROM company WHERE name=?"
-    query4 = "INSERT INTO propertier_contact_person (id,name,designation,telephone,mobile,email) VALUES (?,?,?,?,?)"
+    query4 = "INSERT INTO propertier_contact_person (id,name,designation,telephone,mobile,email) VALUES (?,?,?,?,?,?)"
     query5 = "INSERT INTO furnace_capacity (id,metal,melting,heating) VALUES (?,?,?,?)"
     query6 = "INSERT INTO machinery (id,machine_type,capacity,value) VALUES (?,?,?,?)"
     query7 = "INSERT INTO furnace (id,furnace_type,fuel) VALUES (?,?,?)"
@@ -44,7 +44,7 @@ exports.getCompanyData = async function (req, res) {
         console.log("Company already exists in database")
     }
     else {
-        companyName = req.body.companyName,
+            companyName = req.body.companyName,
             province = req.body.province,
             district = req.body.district,
             dsDivision = req.body.dsDivision,
@@ -64,7 +64,7 @@ exports.getCompanyData = async function (req, res) {
             reg_no = req.body.reg_no,
             industry_reg = req.body.industry_reg,
             industry_reg_no = req.body.industry_reg_no
-        land_area = req.body.land_area,
+            land_area = req.body.land_area,
             land_value = req.body.land_value,
             building_area = req.body.building_area,
             building_value = req.body.building_value,
@@ -95,7 +95,7 @@ exports.getCompanyData = async function (req, res) {
 
 
         /* Begin transaction */
-        db.connection.beginTransaction(function (err) {
+       await db.connection.beginTransaction(async function (err) {
             if (err) { throw err; }
 
             try {
@@ -108,7 +108,7 @@ exports.getCompanyData = async function (req, res) {
             }
 
             try {
-                companyid = db.query(query3, [companyName])
+                companyid = await db.query(query3, [companyName])
 
             } catch (error) {
                 console.log(error)
@@ -118,6 +118,8 @@ exports.getCompanyData = async function (req, res) {
             try {
                 for (let index = 0; index < proprietor.length; index++) {
                     const element = proprietor[index];
+                    console.log(companyid)
+                    console.log(element.name, element.designation, element.tele, element.mobile, element.email)
                     db.query(query4, [companyid, element.name, element.designation, element.tele, element.mobile, element.email])
 
                 }
@@ -127,142 +129,142 @@ exports.getCompanyData = async function (req, res) {
             }
 
 
-            try {
-                for (let index = 0; index < furnace_capacity.length; index++) {
-                    const element = furnace_capacity[index];
-                    db.query(query5, [companyid, element.metal, element.melting, element.heating])
+            // try {
+            //     for (let index = 0; index < furnace_capacity.length; index++) {
+            //         const element = furnace_capacity[index];
+            //         db.query(query5, [companyid, element.metal, element.melting, element.heating])
 
 
-                }
+            //     }
 
-            } catch (error) {
-                console.log(error)
-            }
-
-
-            try {
-                for (let index = 0; index < machinery.length; index++) {
-                    const element = furnace_capacity[index];
-                    db.query(query6, [companyid, element.type, element.capacity, element.value])
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
 
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < furnaces.length; index++) {
-                    const element = furnaces[index];
-                    db.query(query7, [companyid, element.name, element.fuel])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
+            // try {
+            //     for (let index = 0; index < machinery.length; index++) {
+            //         const element = furnace_capacity[index];
+            //         db.query(query6, [companyid, element.type, element.capacity, element.value])
 
 
-            try {
-                for (let index = 0; index < metal_processing.length; index++) {
-                    const element = metal_processing[index];
-                    db.query(query8, [companyid, element.metal, element.melting, element.heating, element.temp])
+            //     }
 
-                }
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
-            } catch (error) {
-                console.log(error)
-            }
+            // try {
+            //     for (let index = 0; index < furnaces.length; index++) {
+            //         const element = furnaces[index];
+            //         db.query(query7, [companyid, element.name, element.fuel])
 
-            try {
-                for (let index = 0; index < raw_materials.length; index++) {
-                    const element = raw_materials[index];
-                    db.query(query9, [companyid, element.metal, element.origin, element.state, element.amount])
+            //     }
 
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < emp_details.length; index++) {
-                    const element = emp_details[index];
-                    db.query(query10, [companyid, element.type, element.local, element.foreign])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < products.length; index++) {
-                    const element = products[index];
-                    db.query(query11, [companyid, element.name, element.state, element.units, element.weight])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < markets.length; index++) {
-                    const element = markets[index];
-                    db.query(query12, [companyid, element.local_retail, element.local_companies, element.export])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-                for (let index = 0; index < other_markets.length; index++) {
-                    const element = other_markets[index];
-                    db.query(query13, [companyid, element.name, element.percentage])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-
-            try {
-
-                db.query(query14, [companyid, "2016-2017", annual_turnover.y2016_2017])
-                db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
-                db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
 
+            // try {
+            //     for (let index = 0; index < metal_processing.length; index++) {
+            //         const element = metal_processing[index];
+            //         db.query(query8, [companyid, element.metal, element.melting, element.heating, element.temp])
 
-            } catch (error) {
-                console.log(error)
-            }
+            //     }
 
-            try {
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
-                db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
+            // try {
+            //     for (let index = 0; index < raw_materials.length; index++) {
+            //         const element = raw_materials[index];
+            //         db.query(query9, [companyid, element.metal, element.origin, element.state, element.amount])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < emp_details.length; index++) {
+            //         const element = emp_details[index];
+            //         db.query(query10, [companyid, element.type, element.local, element.foreign])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < products.length; index++) {
+            //         const element = products[index];
+            //         db.query(query11, [companyid, element.name, element.state, element.units, element.weight])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < markets.length; index++) {
+            //         const element = markets[index];
+            //         db.query(query12, [companyid, element.local_retail, element.local_companies, element.export])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < other_markets.length; index++) {
+            //         const element = other_markets[index];
+            //         db.query(query13, [companyid, element.name, element.percentage])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+
+            //     db.query(query14, [companyid, 2016-2017, annual_turnover.y2016_2017])
+            //     db.query(query14, [companyid, 2017-2018, annual_turnover.y2017_2018])
+            //     db.query(query14, [companyid, 2018-2019, annual_turnover.y2017_2018])
 
 
 
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
-            } catch (error) {
-                console.log(error)
-            }
+            // try {
 
-            try {
-                for (let index = 0; index < waste_generated.length; index++) {
-                    const element = waste_generated[index];
-                    db.query(query16, [companyid, element.type, element.amount, element.disposal])
+            //     db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
 
-                }
 
-            } catch (error) {
-                console.log(error)
-            }
+
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
+
+            // try {
+            //     for (let index = 0; index < waste_generated.length; index++) {
+            //         const element = waste_generated[index];
+            //         db.query(query16, [companyid, element.type, element.amount, element.disposal])
+
+            //     }
+
+            // } catch (error) {
+            //     console.log(error)
+            // }
 
 
             db.connection.commit(function (err) {
