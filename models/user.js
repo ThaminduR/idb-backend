@@ -91,13 +91,6 @@ exports.getCompanyData = async function (req, res) {
             interviewer = req.body.interviewer,
             yoi = req.body.yoi
 
-
-
-
-        /* Begin transaction */
-       await db.connection.beginTransaction(async function (err) {
-            if (err) { throw err; }
-
             try {
                 db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitiude, longitude, address, telenumber, email, fax, website, turnover, employees,
                     yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
@@ -107,12 +100,25 @@ exports.getCompanyData = async function (req, res) {
                 console.log(error)
             }
 
+
             try {
-                companyid = await db.query(query3, [companyName])
+                result = db.query(query3, [companyName])
+                var companyid=(result[0])
+                console.log(companyid) 
 
             } catch (error) {
                 console.log(error)
             }
+
+
+
+        /* Begin transaction */
+       await db.connection.beginTransaction(async function (err) {
+            if (err) { throw err; }
+
+            
+
+           
 
             
             try {
