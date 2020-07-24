@@ -1,4 +1,4 @@
 #! /bin/bash
 cd /home/ubuntu/idb/
 sudo cp .env /home/ubuntu/idb/idb-backend
-sudo pm2 reload idb-server
+sudo pm2 start index.js
