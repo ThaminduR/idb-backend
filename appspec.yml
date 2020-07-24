@@ -5,5 +5,5 @@ files:
     destination: /home/ubuntu/idb/idb-backend
 hooks:
   AfterInstall:
-    - location: Scripts/mvenv.sh
+    - location: Scripts/moveenv.sh
       timeout: 10

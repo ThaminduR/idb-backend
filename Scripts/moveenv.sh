@@ -1,2 +1,3 @@
 #! /bin/bash
-sudo mv ../.env /home/ubuntu/idb/idb-backend
+cd /home/ubuntu/idb/
+sudo cp .env /home/ubuntu/idb/idb-backend
