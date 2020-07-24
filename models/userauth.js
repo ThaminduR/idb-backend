@@ -34,7 +34,7 @@ exports.login = async function (req, res) {
 
             res.cookie("authtoken", accessToken, { httpOnly: true })
             res.cookie("username", username)
-            res.send({ "code": 200, "message": "Logging successful" })
+            res.send({ "code": 200, "message": "Logging successful ?" })
 
         } else {
             res.send({

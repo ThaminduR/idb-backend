@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 const corsOptions = {
     origin: [
-        "http://" + process.env.SERVER_ADDRESS + ":3000"
+        "http://" + process.env.HOST
     ],
     credentials: true,
     exposedHeaders: ["set-cookie"],
@@ -26,6 +26,6 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 const index = require('./routes/indexRoutes')
-app.use('/', index);
+app.use('/api', index);
 
 app.listen(port, address, () => console.log("Server Started. Running on " + process.env.SERVER_ADDRESS + " in " + process.env.PORT))
