@@ -27,8 +27,8 @@ deploy:
   bucket: idb-bucket
   key: buildb.zip
   bundle_type: zip
-  application: CodeDeployIDB
-  deployment_group: CodeDeployIDB-Group
+  application: CodeDeployIDB-B
+  deployment_group: CodeDeployIDB-B-Group
   region: ap-southeast-1
   on: *2
 
