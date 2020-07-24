@@ -3,6 +3,11 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs');
 
 
+exports.test = function (req, res) {
+    res.send({ 'code': 200, 'message': 'It Works !' })
+}
+
+
 //function to fill company data
 
 exports.getCompanyData = async function (req, res) {
