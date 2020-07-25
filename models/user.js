@@ -55,7 +55,7 @@ exports.getCompanyData = async function (req, res) {
             district = req.body.district,
             dsDivision = req.body.dsDivision,
             gnDivision = req.body.gnDivision,
-            latitiude = req.body.latitude,
+            latitude = req.body.latitude,
             longitude = req.body.longitude,
             address = req.body.address,
             email = req.body.email,
@@ -69,8 +69,8 @@ exports.getCompanyData = async function (req, res) {
             business_type = req.body.business_type,
             reg_no = req.body.reg_no,
             industry_reg = req.body.industry_reg,
-            industry_reg_no = req.body.industry_reg_no
-        land_area = req.body.land_area,
+            industry_reg_no = req.body.industry_reg_no,
+            land_area = req.body.land_area,
             land_value = req.body.land_value,
             building_area = req.body.building_area,
             building_value = req.body.building_value,
@@ -114,7 +114,7 @@ exports.getCompanyData = async function (req, res) {
             try {
                 const result = await db.query(query3, [companyName])
                 console.log(result)
-                const companyid = (result[0].id)
+                companyid = (result[0].id)
                 console.log(companyid)
 
             } catch (error) {
