@@ -83,7 +83,7 @@ exports.getCompanyData = async function (req, res) {
             total_working_capital = req.body.total_capital_investment,
             site_type = req.body.site_type,
             furnace_capacity = req.body.furnace_capacity,
-            furnaces = req.body.furnaces,
+            furnances = req.body.furnances,
             machinery = req.body.machinery,
             metal_processing = req.body.metal_processing,
             raw_materials = req.body.raw_materials,
@@ -125,7 +125,7 @@ exports.getCompanyData = async function (req, res) {
                 for (let index = 0; index < proprietor.length; index++) {
                     const element = proprietor[index];
                     
-                    console.log(element.name, element.designation, element.tele, element.mobile, element.email)
+                    
                     db.query(query4, [companyid, element.name, element.designation, element.tele, element.mobile, element.email])
 
                 }
@@ -149,6 +149,7 @@ exports.getCompanyData = async function (req, res) {
 
             try {
                 for (let index = 0; index < machinery.length; index++) {
+                    console.log(element.name, element.designation, element.tele, element.mobile, element.email)
                     const element = furnace_capacity[index];
                     db.query(query6, [companyid, element.type, element.capacity, element.value])
 
@@ -160,8 +161,8 @@ exports.getCompanyData = async function (req, res) {
             }
 
             try {
-                for (let index = 0; index < furnaces.length; index++) {
-                    const element = furnaces[index];
+                for (let index = 0; index < furnances.length; index++) {
+                    const element = furnances[index];
                     db.query(query7, [companyid, element.name, element.fuel])
 
                 }
