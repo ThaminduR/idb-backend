@@ -29,6 +29,3 @@ const index = require('./routes/indexRoutes')
 app.use('/api', index);
 
 app.listen(port, address, () => console.log("Server Started. Running on " + process.env.SERVER_ADDRESS + " in " + process.env.PORT))
-
-
-//Test 2
