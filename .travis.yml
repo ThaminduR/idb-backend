@@ -19,20 +19,20 @@ deploy:
   skip_cleanup: true
   on: &2
     repo: ThaminduR/idb-backend
-  bucket: idb-bucket
-  region: ap-southeast-1
+  bucket: idb-code-bucket
+  region: ap-south-1
 - provider: codedeploy
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
-  bucket: idb-bucket
-  key: buildb.zip
+  bucket: idb-code-bucket
+  key: build-backend.zip
   bundle_type: zip
-  application: CodeDeployIDB-B
-  deployment_group: CodeDeployIDB-B-Group
-  region: ap-southeast-1
+  application: CodeDeploy-Backend
+  deployment_group: CodeDeploy-Backend-Group
+  region: ap-south-1
   on: *2
 
 script:
-  - zip -r buildb *
+  - zip -r build-backend *
   - mkdir -p dpl_cd_upload
-  - mv buildb.zip dpl_cd_upload/buildb.zip
+  - mv build-backend.zip dpl_cd_upload/build-backend.zip
