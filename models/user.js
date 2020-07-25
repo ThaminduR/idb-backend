@@ -50,7 +50,7 @@ exports.getCompanyData = async function (req, res) {
         return
     }
     else {
-        companyName = req.body.companyName,
+            companyName = req.body.companyName,
             province = req.body.province,
             district = req.body.district,
             dsDivision = req.body.dsDivision,
@@ -102,7 +102,7 @@ exports.getCompanyData = async function (req, res) {
             if (err) { throw err; }
 
             try {
-                db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitiude, longitude, address, telenumber, email, fax, website, turnover, employees,
+                db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, employees,
                     yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
                     total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, site_type, interviewer, yoi])
 
@@ -112,10 +112,10 @@ exports.getCompanyData = async function (req, res) {
 
 
             try {
-                const result = await db.query(query3, [companyName])
-                console.log(result)
-                companyid = (result[0].id)
-                console.log(companyid)
+                result = await db.query(query3, [companyName])
+                
+                var companyid = (result[0].id)
+                
 
             } catch (error) {
                 console.log(error)
@@ -124,7 +124,7 @@ exports.getCompanyData = async function (req, res) {
             try {
                 for (let index = 0; index < proprietor.length; index++) {
                     const element = proprietor[index];
-                    console.log(companyid)
+                    
                     console.log(element.name, element.designation, element.tele, element.mobile, element.email)
                     db.query(query4, [companyid, element.name, element.designation, element.tele, element.mobile, element.email])
 
