@@ -14,6 +14,8 @@ exports.getCompanyData = async function (req, res) {
     try {
         db = new database();
 
+        
+
     } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'Database Error' })
