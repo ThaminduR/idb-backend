@@ -1,27 +1,19 @@
 const database = require('../config/db')
 
-
-
 exports.test = function (req, res) {
     res.send({ 'code': 401, 'message': 'It Works !' })
 }
-
-
-//function to fill company data
 
 exports.getCompanyData = async function (req, res) {
 
     try {
         db = new database();
 
-        
-
     } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'Database Error' })
         return
     }
-
 
     query1 = "SELECT name FROM company WHERE name=?"
     query2 = "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
@@ -40,7 +32,6 @@ exports.getCompanyData = async function (req, res) {
     query15 = "INSERT INTO business_progression (id,yr1_dir,yr1_percentage,yr2_dir,yr2_percentage) VALUES (?,?,?,?,?)"
     query16 = "INSERT INTO waste_generated (id,type_waste,amount_waste,dispose_method) VALUES (?,?,?,?)"
 
-
     try {
         companyName = req.body.companyName
         console.log(companyName)
@@ -51,11 +42,13 @@ exports.getCompanyData = async function (req, res) {
         res.send({ 'code': 204, 'message': 'Error Occured' })
         return
     }
+
     if (name != "") {
         console.log("Company already exists in database")
         res.send({ 'code': 204, 'message': 'Company Exist in Database' })
         return
     }
+    
     else {
         companyName = req.body.companyName,
             province = req.body.province,
@@ -104,137 +97,92 @@ exports.getCompanyData = async function (req, res) {
             interviewer = req.body.interviewer,
             yoi = req.body.yoi
 
-        /* Begin transaction */
-        await db.connection.beginTransaction(async function (err) {
-            if (err) {
-                res.send({ 'code': 204, 'message': 'Begin Transaction Error Occured' })
-                return
+        try {
+            await db.query("START TRANSACTION")
+
+            await db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, employees,
+                yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
+                total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, site_type, interviewer, yoi])
+
+            result = await db.query(query3, [companyName])
+            var companyid = (result[0].id)
+
+            for (let index = 0; index < proprietor.length; index++) {
+                const element = proprietor[index];
+                await db.query(query4, [companyid, element.name, element.designation, element.tele, element.mobile, element.email])
             }
 
-            try {
-                db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, employees,
-                    yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
-                    total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, site_type, interviewer, yoi])
-
-
-                result = await db.query(query3, [companyName])
-
-                var companyid = (result[0].id)
-
-
-
-                for (let index = 0; index < proprietor.length; index++) {
-                    const element = proprietor[index];
-                    db.query(query4, [companyid, element.name, element.designation, element.tele, element.mobile, element.email])
-
-                }
-
-
-                for (let index = 0; index < furnace_capacity.length; index++) {
-                    const element = furnace_capacity[index];
-                    db.query(query5, [companyid, element.metal, element.melting, element.heating])
-
-
-                }
-
-
-                for (let index = 0; index < machinery.length; index++) {
-                    
-                    const element = machinery[index];
-                    db.query(query6, [companyid, element.type, element.capacity, element.value])
-
-
-                }
-
-
-                for (let index = 0; index < furnances.length; index++) {
-                    const element = furnances[index];
-                    db.query(query7, [companyid, element.name, element.fuel])
-
-                }
-
-
-                for (let index = 0; index < metal_processing.length; index++) {
-                    const element = metal_processing[index];
-                    db.query(query8, [companyid, element.metal, element.melting, element.heating, element.temp])
-
-                }
-
-
-                for (let index = 0; index < raw_materials.length; index++) {
-                    const element = raw_materials[index];
-                    db.query(query9, [companyid, element.metal, element.origin, element.state, element.amount])
-
-                }
-
-
-                for (let index = 0; index < emp_details.length; index++) {
-                    const element = emp_details[index];
-                    db.query(query10, [companyid, element.type, element.local, element.foreign])
-
-                }
-
-
-                for (let index = 0; index < products.length; index++) {
-                    const element = products[index];
-                    db.query(query11, [companyid, element.name, element.state, element.units, element.weight])
-
-                }
-
-
-                for (let index = 0; index < markets.length; index++) {
-                    const element = markets[index];
-                    db.query(query12, [companyid, element.local_retail, element.local_companies, element.export])
-
-                }
-
-
-                for (let index = 0; index < other_markets.length; index++) {
-                    const element = other_markets[index];
-                    db.query(query13, [companyid, element.name, element.percentage])
-
-                }
-
-
-
-                db.query(query14, [companyid, 2016 - 2017, annual_turnover.y2016_2017])
-                db.query(query14, [companyid, 2017 - 2018, annual_turnover.y2017_2018])
-                db.query(query14, [companyid, 2018 - 2019, annual_turnover.y2017_2018])
-
-
-
-
-
-                db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
-
-
-
-
-
-                for (let index = 0; index < waste_generated.length; index++) {
-                    const element = waste_generated[index];
-                    db.query(query16, [companyid, element.type, element.amount, element.disposal])
-
-                }
-
-            } catch (error) {
-                console.log(error)
-                res.send({ 'code': 204, 'message': 'Database Error Occured' })
-                return
+            for (let index = 0; index < furnace_capacity.length; index++) {
+                const element = furnace_capacity[index];
+                await db.query(query5, [companyid, element.metal, element.melting, element.heating])
             }
 
+            for (let index = 0; index < machinery.length; index++) {
+                const element = machinery[index];
+                await db.query(query6, [companyid, element.type, element.capacity, element.value])
+            }
 
-            db.connection.commit(function (err) {
-                if (err) {
-                    db.rollback(function () {
-                        throw err;
-                    });
-                }
-                console.log('Transaction Completed Successfully.');
-                db.connection.end();
-                res.send({ 'code': 200, 'message': 'Success' })
-            });
-        });
+            for (let index = 0; index < furnances.length; index++) {
+                const element = furnances[index];
+                await db.query(query7, [companyid, element.name, element.fuel])
+            }
+
+            for (let index = 0; index < metal_processing.length; index++) {
+                const element = metal_processing[index];
+                await db.query(query8, [companyid, element.metal, element.melting, element.heating, element.temp])
+            }
+
+            for (let index = 0; index < raw_materials.length; index++) {
+                const element = raw_materials[index];
+                await db.query(query9, [companyid, element.metal, element.origin, element.state, element.amount])
+            }
+
+            for (let index = 0; index < emp_details.length; index++) {
+                const element = emp_details[index];
+                await db.query(query10, [companyid, element.type, element.local, element.foreign])
+            }
+
+            for (let index = 0; index < products.length; index++) {
+                const element = products[index];
+                await db.query(query11, [companyid, element.name, element.state, element.units, element.weight])
+            }
+
+            for (let index = 0; index < markets.length; index++) {
+                const element = markets[index];
+                await db.query(query12, [companyid, element.local_retail, element.local_companies, element.export])
+            }
+
+            for (let index = 0; index < other_markets.length; index++) {
+                const element = other_markets[index];
+                await db.query(query13, [companyid, element.name, element.percentage])
+            }
+
+            await db.query(query14, [companyid, 2016 - 2017, annual_turnover.y2016_2017])
+            await db.query(query14, [companyid, 2017 - 2018, annual_turnover.y2017_2018])
+            await db.query(query14, [companyid, 2018 - 2019, annual_turnover.y2017_2018])
+            await db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
+
+            for (let index = 0; index < waste_generated.length; index++) {
+                const element = waste_generated[index];
+                await db.query(query16, [companyid, element.type, element.amount, element.disposal])
+            }
+
+            await db.query("COMMIT")
+
+        } catch (error) {
+
+            await db.query("ROLLBACK")
+
+            console.log(error)
+            res.send({ 'code': 204, 'message': 'Database Error Occured' })
+            return
+
+        } finally {
+            await db.close()
+        }
+
+
+
     }
 }
 
