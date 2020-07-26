@@ -97,6 +97,8 @@ exports.getCompanyData = async function (req, res) {
             interviewer = req.body.interviewer,
             yoi = req.body.yoi
 
+        //Commit
+        
         try {
             await db.query("START TRANSACTION")
 
@@ -180,9 +182,6 @@ exports.getCompanyData = async function (req, res) {
         } finally {
             await db.close()
         }
-
-
-
     }
 }
 
