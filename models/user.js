@@ -11,7 +11,7 @@ exports.getCompanyData = async function (req, res) {
 
     } catch (error) {
         console.log(error);
-        res.send({ 'code': 204, 'message': 'Database Error' })
+        res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
         return
     }
 
@@ -25,7 +25,7 @@ exports.getCompanyData = async function (req, res) {
     query8 = "INSERT INTO metal_processing (id,metal,melting,heating,temperature) VALUES (?,?,?,?,?)"
     query9 = "INSERT INTO raw_materials (id,metal,origin,state,metal_usage) VALUES (?,?,?,?,?)"
     query10 = "INSERT INTO employees (id,type,local_em,foreign_em) VALUES (?,?,?,?)"
-    query11 = "INSERT INTO products (id,product,state,units,weight) VALUES (?,?,?,?)"
+    query11 = "INSERT INTO products (id,product,state,units,weight) VALUES (?,?,?,?,?)"
     query12 = "INSERT INTO products_sold (id,local_retails,local_companies,foreigh_market) VALUES (?,?,?,?)"
     query13 = "INSERT INTO other_product_sold (id,description,percentage) VALUES (?,?,?)"
     query14 = "INSERT INTO annual_turnover (id,year_range,value) VALUES (?,?,?)"
@@ -39,13 +39,13 @@ exports.getCompanyData = async function (req, res) {
 
     } catch (error) {
         console.log("error")
-        res.send({ 'code': 204, 'message': 'Error Occured' })
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
 
     if (name != "") {
         console.log("Company already exists in database")
-        res.send({ 'code': 204, 'message': 'Company Exist in Database' })
+        res.send({ 'code': 204, 'message': 'Company Exist in Database.Try Again' })
         return
     }
     
@@ -159,9 +159,9 @@ exports.getCompanyData = async function (req, res) {
                 await db.query(query13, [companyid, element.name, element.percentage])
             }
 
-            await db.query(query14, [companyid, 2016 - 2017, annual_turnover.y2016_2017])
-            await db.query(query14, [companyid, 2017 - 2018, annual_turnover.y2017_2018])
-            await db.query(query14, [companyid, 2018 - 2019, annual_turnover.y2017_2018])
+            await db.query(query14, [companyid, "2016-2017", annual_turnover.y2016_2017])
+            await db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
+            await db.query(query14, [companyid, "2018-2019", annual_turnover.y2017_2018])
             await db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
 
             for (let index = 0; index < waste_generated.length; index++) {
@@ -176,7 +176,7 @@ exports.getCompanyData = async function (req, res) {
             await db.query("ROLLBACK")
 
             console.log(error)
-            res.send({ 'code': 204, 'message': 'Database Error Occured' })
+            res.send({ 'code': 204, 'message': 'Database Error Occured.Try Again' })
             return
 
         } finally {
