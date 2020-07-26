@@ -101,7 +101,7 @@ exports.getCompanyData = async function (req, res) {
         /* Begin transaction */
         await db.connection.beginTransaction(async function (err) {
             if (err) {
-                res.send({ 'code': 204, 'message': 'Error Occured' })
+                res.send({ 'code': 204, 'message': 'Begin Transaction Error Occured' })
                 return
             }
 
@@ -215,7 +215,7 @@ exports.getCompanyData = async function (req, res) {
 
             } catch (error) {
                 console.log(error)
-                res.send({ 'code': 204, 'message': 'Error Occured' })
+                res.send({ 'code': 204, 'message': 'Database Error Occured' })
                 return
             }
 
