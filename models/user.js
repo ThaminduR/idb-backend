@@ -159,9 +159,9 @@ exports.getCompanyData = async function (req, res) {
                 await db.query(query13, [companyid, element.name, element.percentage])
             }
 
-            await db.query(query14, [companyid, "2016-2017", annual_turnover.y2016_2017])
-            await db.query(query14, [companyid, "2017-2018", annual_turnover.y2017_2018])
-            await db.query(query14, [companyid, "2018-2019", annual_turnover.y2017_2018])
+            await db.query(query14, [companyid, "Y2016_2017", annual_turnover.y2016_2017])
+            await db.query(query14, [companyid, "Y2017_2018", annual_turnover.y2017_2018])
+            await db.query(query14, [companyid, "Y2018_2019", annual_turnover.y2017_2018])
             await db.query(query15, [companyid, business_progression.year1_dir, business_progression.year1, business_progression.year2_dir, business_progression.year2])
 
             for (let index = 0; index < waste_generated.length; index++) {
