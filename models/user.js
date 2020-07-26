@@ -34,7 +34,6 @@ exports.getCompanyData = async function (req, res) {
 
     try {
         companyName = req.body.companyName
-        console.log(companyName)
         name = await db.query(query1, [companyName])
 
     } catch (error) {
@@ -178,10 +177,10 @@ exports.getCompanyData = async function (req, res) {
 
             console.log(error)
             res.send({ 'code': 204, 'message': 'Database Error Occured.Try Again' })
-            return
 
         } finally {
             await db.close()
+            console.log('Executed')
         }
     }
 }
