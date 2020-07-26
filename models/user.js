@@ -48,7 +48,7 @@ exports.getCompanyData = async function (req, res) {
         res.send({ 'code': 204, 'message': 'Company Exist in Database.Try Again' })
         return
     }
-    
+
     else {
         companyName = req.body.companyName,
             province = req.body.province,
@@ -98,7 +98,7 @@ exports.getCompanyData = async function (req, res) {
             yoi = req.body.yoi
 
         //Commit
-        
+
         try {
             await db.query("START TRANSACTION")
 
@@ -170,6 +170,7 @@ exports.getCompanyData = async function (req, res) {
             }
 
             await db.query("COMMIT")
+            res.send({ 'code': 200, 'message': 'Data Added Successfully' })
 
         } catch (error) {
 
