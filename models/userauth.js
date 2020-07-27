@@ -42,7 +42,7 @@ exports.login = async function (req, res) {
 
             res.cookie("authtoken", accessToken, { httpOnly: true })
             res.cookie("username", username)
-            res.send({ "code": 200, "message": "Sign In successful" })
+            res.send({ "code": 200, "message": "Sign In successful !" })
 
         } else {
             res.send({
