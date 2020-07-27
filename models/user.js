@@ -16,7 +16,7 @@ exports.getCompanyData = async function (req, res) {
     }
 
     query1 = "SELECT name FROM company WHERE name=?"
-    query2 = "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    query2 = "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     query3 = "SELECT id FROM company WHERE name=?"
     query4 = "INSERT INTO propertier_contact_person (id,name,designation,telephone,mobile,email) VALUES (?,?,?,?,?,?)"
     query5 = "INSERT INTO furnace_capacity (id,metal,melting,heating) VALUES (?,?,?,?)"
@@ -25,7 +25,7 @@ exports.getCompanyData = async function (req, res) {
     query8 = "INSERT INTO metal_processing (id,metal,melting,heating,temperature) VALUES (?,?,?,?,?)"
     query9 = "INSERT INTO raw_materials (id,metal,origin,state,metal_usage) VALUES (?,?,?,?,?)"
     query10 = "INSERT INTO employees (id,type,local_em,foreign_em) VALUES (?,?,?,?)"
-    query11 = "INSERT INTO products (id,product,state,units,weight) VALUES (?,?,?,?,?)"
+    query11 = "INSERT INTO products (id,metal,product,state,units,weight) VALUES (?,?,?,?,?,?)"
     query12 = "INSERT INTO products_sold (id,local_retails,local_companies,foreigh_market) VALUES (?,?,?,?)"
     query13 = "INSERT INTO other_product_sold (id,description,percentage) VALUES (?,?,?)"
     query14 = "INSERT INTO annual_turnover (id,year_range,value) VALUES (?,?,?)"
@@ -80,7 +80,8 @@ exports.getCompanyData = async function (req, res) {
             semi_goods_value = req.body.semi_goods_value,
             goods_value = req.body.goods_value,
             total_working_capital = req.body.total_capital_investment,
-            site_type = req.body.site_type,
+            owned_site = req.body.owned_site,
+            rented_site = req.body.rented_site,
             furnace_capacity = req.body.furnace_capacity,
             furnances = req.body.furnaces,
             machinery = req.body.machinery,
@@ -103,7 +104,7 @@ exports.getCompanyData = async function (req, res) {
 
             await db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, employees,
                 yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
-                total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, site_type, interviewer, yoi])
+                total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, owned_site,rented_site, interviewer, yoi])
 
             result = await db.query(query3, [companyName])
             var companyid = (result[0].id)
@@ -145,7 +146,7 @@ exports.getCompanyData = async function (req, res) {
 
             for (let index = 0; index < products.length; index++) {
                 const element = products[index];
-                await db.query(query11, [companyid, element.name, element.state, element.units, element.weight])
+                await db.query(query11, [companyid,element.metal,element.type, element.state, element.units, element.weight])
             }
 
             for (let index = 0; index < markets.length; index++) {
