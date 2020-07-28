@@ -31,7 +31,7 @@ exports.getCompanyData = async function (req, res) {
     query14 = "INSERT INTO annual_turnover (id,year_range,value) VALUES (?,?,?)"
     query15 = "INSERT INTO business_progression (id,yr1_dir,yr1_percentage,yr2_dir,yr2_percentage) VALUES (?,?,?,?,?)"
     query16 = "INSERT INTO waste_generated (id,type_waste,amount_waste,dispose_method) VALUES (?,?,?,?)"
-    query17="INSERT INTO energy_consumption (id,type,existing,expected) VALUES (?,?,?,?)"
+    query17="INSERT INTO energy_consumption (id,type,state,units) VALUES (?,?,?,?)"
 
     try {
         companyName = req.body.companyName
@@ -100,8 +100,8 @@ exports.getCompanyData = async function (req, res) {
             waste_generated = req.body.waste_generated,
             interviewer = req.body.interviewer,
             yoi = req.body.yoi,
-            area = req.body.area,
-            usage_steel=req.body.usage_steel,
+            area = req.body.floor_area,
+            usage_steel=req.body.under_heating,
             enerygy_consumption = req.body.enerygy_consumption
 
         //Commit
@@ -133,7 +133,7 @@ exports.getCompanyData = async function (req, res) {
 
             for (let index = 0; index < furnances.length; index++) {
                 const element = furnances[index];
-                await db.query(query7, [companyid, element.name,,element.capacity,element.batches,element.fuel])
+                await db.query(query7, [companyid, element.name,,element.capacity,element.batchespd,element.fuel])
             }
 
             for (let index = 0; index < metal_processing.length; index++) {
@@ -178,7 +178,7 @@ exports.getCompanyData = async function (req, res) {
 
             for (let index = 0; index < enerygy_consumption.length; index++) {
                 const element = enerygy_consumption[index];
-                await db.query(query17, [companyid, element.type, element.existing, element.expected])
+                await db.query(query17, [companyid, element.type, element.state, element.units])
             }
 
             await db.query("COMMIT")
