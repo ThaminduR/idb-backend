@@ -105,11 +105,9 @@ exports.getCompanyData = async function (req, res) {
             usage_steel = req.body.under_heating,
             energy_consumption = req.body.energy
 
-        //Commit
+        
 
-        if(local_employees || foreign_employees || turnover){
-            console.log("pakaya")
-        }
+        
 
         try {
             await db.query("START TRANSACTION")
