@@ -111,6 +111,7 @@ exports.getCompanyData = async function (req, res) {
 
         try {
             await db.query("START TRANSACTION")
+            
 
             await db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, local_employees, foreign_employees,
                 yoe, business_type, reg_no, registered_place, industry_reg, industry_reg_no, industry_registered_place, land_area, land_value, building_area, building_value, machine_value, utilities_value,
