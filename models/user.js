@@ -16,7 +16,7 @@ exports.getCompanyData = async function (req, res) {
     }
 
     query1 = "SELECT name FROM company WHERE name=?"
-    query2 = "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    query2 = "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     query3 = "SELECT id FROM company WHERE name=?"
     query4 = "INSERT INTO propertier_contact_person (id,name,designation,telephone,mobile,email) VALUES (?,?,?,?,?,?)"
     query5 = "INSERT INTO furnace_capacity (id,metal,melting,heating) VALUES (?,?,?,?)"
@@ -31,6 +31,7 @@ exports.getCompanyData = async function (req, res) {
     query14 = "INSERT INTO annual_turnover (id,year_range,value) VALUES (?,?,?)"
     query15 = "INSERT INTO business_progression (id,yr1_dir,yr1_percentage,yr2_dir,yr2_percentage) VALUES (?,?,?,?,?)"
     query16 = "INSERT INTO waste_generated (id,type_waste,amount_waste,dispose_method) VALUES (?,?,?,?)"
+    query17="INSERT INTO energy_consumption (id,type,existing,expected) VALUES (?,?,?,?)"
 
     try {
         companyName = req.body.companyName
@@ -63,12 +64,15 @@ exports.getCompanyData = async function (req, res) {
             website = req.body.website,
             proprietor = req.body.proprietor,
             turnover = req.body.turnover,
-            employees = req.body.employees,
+            local_employees = req.body.local_employees,
+            foreign_employees = req.body.foreign_employees,
             yoe = req.body.yoe,
             business_type = req.body.business_type,
             reg_no = req.body.reg_no,
+            registered_place=req.body.reg_place,
             industry_reg = req.body.industry_reg,
             industry_reg_no = req.body.industry_reg_no,
+            industry_registered_place=req.body.industry_reg_place,
             land_area = req.body.land_area,
             land_value = req.body.land_value,
             building_area = req.body.building_area,
@@ -95,16 +99,19 @@ exports.getCompanyData = async function (req, res) {
             business_progression = req.body.business_progression,
             waste_generated = req.body.waste_generated,
             interviewer = req.body.interviewer,
-            yoi = req.body.yoi
+            yoi = req.body.yoi,
+            area = req.body.area,
+            usage_steel=req.body.usage_steel,
+            enerygy_consumption = req.body.enerygy_consumption
 
         //Commit
 
         try {
             await db.query("START TRANSACTION")
 
-            await db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, employees,
-                yoe, business_type, reg_no, industry_reg, industry_reg_no, land_area, land_value, building_area, building_value, machine_value, utilities_value,
-                total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, owned_site,rented_site, interviewer, yoi])
+            await db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, local_employees,foreign_employees,
+                yoe, business_type, reg_no,registered_place, industry_reg, industry_reg_no,industry_registered_place, land_area, land_value, building_area, building_value, machine_value, utilities_value,
+                total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, owned_site,rented_site, interviewer, yoi,area,usage_steel])
 
             result = await db.query(query3, [companyName])
             var companyid = (result[0].id)
@@ -126,7 +133,7 @@ exports.getCompanyData = async function (req, res) {
 
             for (let index = 0; index < furnances.length; index++) {
                 const element = furnances[index];
-                await db.query(query7, [companyid, element.name, element.fuel])
+                await db.query(query7, [companyid, element.name,,element.capacity,element.batches,element.fuel])
             }
 
             for (let index = 0; index < metal_processing.length; index++) {
@@ -167,6 +174,11 @@ exports.getCompanyData = async function (req, res) {
             for (let index = 0; index < waste_generated.length; index++) {
                 const element = waste_generated[index];
                 await db.query(query16, [companyid, element.type, element.amount, element.disposal])
+            }
+
+            for (let index = 0; index < enerygy_consumption.length; index++) {
+                const element = enerygy_consumption[index];
+                await db.query(query17, [companyid, element.type, element.existing, element.expected])
             }
 
             await db.query("COMMIT")
