@@ -65,7 +65,7 @@ exports.getCompanyData = async function (req, res) {
             proprietor = req.body.proprietor,
             turnover = req.body.turnover,
             local_employees = req.body.local_employees,
-            console.log(local_employees)
+            
         foreign_employees = req.body.foreign_employees,
             yoe = req.body.yoe,
             business_type = req.body.business_type,
@@ -105,7 +105,9 @@ exports.getCompanyData = async function (req, res) {
             usage_steel = req.body.under_heating,
             energy_consumption = req.body.energy
 
-        //Commit
+        
+
+        
 
         try {
             await db.query("START TRANSACTION")
@@ -114,10 +116,7 @@ exports.getCompanyData = async function (req, res) {
                 yoe, business_type, reg_no, registered_place, industry_reg, industry_reg_no, industry_registered_place, land_area, land_value, building_area, building_value, machine_value, utilities_value,
                 total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, owned_site, rented_site, interviewer, yoi, area, usage_steel])
 
-            console.log(companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, local_employees, foreign_employees,
-                yoe, business_type, reg_no, registered_place, industry_reg, industry_reg_no, industry_registered_place, land_area, land_value, building_area, building_value, machine_value, utilities_value,
-                total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, owned_site, rented_site, interviewer, yoi, area, usage_steel)
-
+            
             result = await db.query(query3, [companyName])
 
             var companyid = (result[0].id)
