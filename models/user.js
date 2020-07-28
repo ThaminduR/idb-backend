@@ -107,6 +107,10 @@ exports.getCompanyData = async function (req, res) {
 
         //Commit
 
+        if(local_employees || foreign_employees || turnover){
+            console.log("pakaya")
+        }
+
         try {
             await db.query("START TRANSACTION")
 
