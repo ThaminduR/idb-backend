@@ -237,7 +237,6 @@ exports.viewCompanyData = async function (req, res) {
     query24 = "SELECT * FROM working_captial WHERE id=?"
 
 
-
     try {
         annual_turnover = await db.query(query2, [companyid])
         building_capital = await db.query(query3, [companyid])
@@ -263,19 +262,15 @@ exports.viewCompanyData = async function (req, res) {
         waste_generated = await db.query(query23, [companyid])
         working_capital = await db.query(query24, [companyid])
 
-        const result = { annual_turnover, building_capital, business_progression, capital_investment, company, contact_details, energy_consumption, furnace, interviewer, land_capital, location, machinery, other_product_sold, ownership_registration, plant_floor, products, products_sold, propertier_contact_person, property_ownership, raw_materials, under_heating, waste_generated, working_capital}
-        res.send({ 'code': 200, 'message': 'success',result:result })
+        const result = { annual_turnover, building_capital, business_progression, capital_investment, company, contact_details, energy_consumption, furnace, interviewer, land_capital, location, machinery, other_product_sold, ownership_registration, plant_floor, products, products_sold, propertier_contact_person, property_ownership, raw_materials, under_heating, waste_generated, working_capital }
+        
+        res.send({ 'code': 200, 'message': 'success', 'surveyData': result })
+
     } catch (error) {
         console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
-
-
-
-
-
-
 }
 
 
@@ -295,6 +290,7 @@ exports.viewSurveyForm = async function (req, res) {
     try {
 
         result = await db.query(query1, [surveyedYear])
+<<<<<<< HEAD
         res.send({ 'code': 200, 'message': 'Success', 'data': result })
         console.log(result)
 
@@ -324,4 +320,13 @@ exports.deleteSurveryForm=async function(req,res){
     surveyedYear = req.body.yoi
     companyName = req.body.name
     query1 = "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
+=======
+        res.send({ 'code': 200, 'message': 'Success', 'companyData': result })
+
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+>>>>>>> 70d9a090efcc24ef6f257338dd26d19bc9540ae9
 }
