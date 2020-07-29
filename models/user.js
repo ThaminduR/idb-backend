@@ -309,7 +309,7 @@ exports.viewSurveys = async function (req, res) {
     }
 
     surveyedYear = req.body.yoi
-    query1 = "SELECT id FROM basic_information Where surveyed_year=?"
+    query1 = "SELECT * FROM basic_information Where surveyed_year=?"
 
     try {
 
