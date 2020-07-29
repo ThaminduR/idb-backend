@@ -236,8 +236,7 @@ exports.viewCompanyData = async function (req, res) {
     query23 = "SELECT * FROM waste_generated WHERE id=?"
     query24 = "SELECT * FROM working_captial WHERE id=?"
 
-
-    try {
+    try{
         annual_turnover = await db.query(query2, [companyid])
         building_capital = await db.query(query3, [companyid])
         business_progression = await db.query(query4, [companyid])
@@ -290,7 +289,7 @@ exports.viewSurveyForm = async function (req, res) {
     try {
 
         result = await db.query(query1, [surveyedYear])
-<<<<<<< HEAD
+
         res.send({ 'code': 200, 'message': 'Success', 'data': result })
         console.log(result)
 
@@ -317,16 +316,5 @@ exports.deleteSurveryForm=async function(req,res){
         return
     }
 
-    surveyedYear = req.body.yoi
-    companyName = req.body.name
-    query1 = "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
-=======
-        res.send({ 'code': 200, 'message': 'Success', 'companyData': result })
-
-    } catch (error) {
-        console.log(error)
-        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
-        return
-    }
->>>>>>> 70d9a090efcc24ef6f257338dd26d19bc9540ae9
+    
 }
