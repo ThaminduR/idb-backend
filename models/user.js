@@ -203,7 +203,7 @@ exports.getCompanyData = async function (req, res) {
 
 
 
-exports.viewCompanyData = async function (req, res) {
+exports.viewCompanyData  = async function (req, res) {
     try {
         db = new database();
 
@@ -298,7 +298,7 @@ exports.viewCompanyData = async function (req, res) {
 }
 
 
-exports.viewSurveyForm = async function (req, res) {
+exports.viewSurveys = async function (req, res) {
     try {
         db = new database();
 
@@ -318,7 +318,8 @@ exports.viewSurveyForm = async function (req, res) {
         console.log(result)
 
     } catch (error) {
-        console.log("error")
+        console.log(error)
+        console.log("checkfff")
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
