@@ -332,7 +332,7 @@ exports.deleteSurveryForm = async function (req, res) {
         await db.query(query2, [name, telenumber, address])
 
         await db.query("COMMIT")
-        res.send({ 'code': 200, 'message': 'Data Added Successfully' })
+        res.send({ 'code': 200, 'message': 'Data Deleted Successfully' })
 
 
     } catch (error) {
