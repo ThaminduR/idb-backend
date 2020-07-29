@@ -19,12 +19,9 @@ exports.getCompanyData = async function (req, res) {
     query2 = "CALL AddSurvey(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     query3 = "SELECT id FROM company WHERE name=?"
     query4 = "INSERT INTO propertier_contact_person (id,name,designation,telephone,mobile,email) VALUES (?,?,?,?,?,?)"
-    //query5 = "INSERT INTO furnace_capacity (id,metal,melting,heating) VALUES (?,?,?,?)"
     query6 = "INSERT INTO machinery (id,machine_type,capacity,value) VALUES (?,?,?,?)"
     query7 = "INSERT INTO furnace (id,furnace_type,capacity,batches,fuel) VALUES (?,?,?,?,?)"
-    //query8 = "INSERT INTO metal_processing (id,metal,melting,heating,temperature) VALUES (?,?,?,?,?)"
     query9 = "INSERT INTO raw_materials (id,metal,origin,state,metal_usage) VALUES (?,?,?,?,?)"
-    //query10 = "INSERT INTO employees (id,type,local_em,foreign_em) VALUES (?,?,?,?)"
     query11 = "INSERT INTO products (id,metal,product,state,units,weight) VALUES (?,?,?,?,?,?)"
     query12 = "INSERT INTO products_sold (id,local_retails,local_companies,foreigh_market) VALUES (?,?,?,?)"
     query13 = "INSERT INTO other_product_sold (id,description,percentage) VALUES (?,?,?)"
@@ -203,7 +200,7 @@ exports.getCompanyData = async function (req, res) {
 
 
 
-exports.viewCompanyData  = async function (req, res) {
+exports.viewCompanyData = async function (req, res) {
     try {
         db = new database();
 
@@ -213,8 +210,7 @@ exports.viewCompanyData  = async function (req, res) {
         return
     }
 
-    surveyedYear = req.body.yoi
-    companyName = req.body.name
+    companyid=req.body.id
     query1 = "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
     query2 = "SELECT * FROM annual_turnover WHERE id=?"
     query3 = "SELECT * FROM building_capital WHERE id=?"
@@ -241,21 +237,6 @@ exports.viewCompanyData  = async function (req, res) {
     query24 = "SELECT * FROM working_captial WHERE id=?"
 
 
-
-
-
-    try {
-
-        result = await db.query(query1, [companyName, surveyedYear])
-        var companyid = (result[0].id)
-        console.log(companyid)
-        
-
-    } catch (error) {
-        console.log("error")
-        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
-        return
-    }
 
     try {
         annual_turnover = await db.query(query2, [companyid])
@@ -298,7 +279,7 @@ exports.viewCompanyData  = async function (req, res) {
 }
 
 
-exports.viewSurveys = async function (req, res) {
+exports.viewSurveyForm = async function (req, res) {
     try {
         db = new database();
 
@@ -314,12 +295,11 @@ exports.viewSurveys = async function (req, res) {
     try {
 
         result = await db.query(query1, [surveyedYear])
-        res.send({ 'code': 200, 'message': 'Success', 'companyData': result })
+        res.send({ 'code': 200, 'message': 'Success', 'data': result })
         console.log(result)
 
     } catch (error) {
-        console.log(error)
-        console.log("checkfff")
+        console.log("error")
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
@@ -329,4 +309,19 @@ exports.viewSurveys = async function (req, res) {
 
 
 
+}
+
+exports.deleteSurveryForm=async function(req,res){
+    try{
+        db=new database;
+    }
+    catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
+        return
+    }
+
+    surveyedYear = req.body.yoi
+    companyName = req.body.name
+    query1 = "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
 }
