@@ -202,3 +202,34 @@ exports.getCompanyData = async function (req, res) {
 }
 
 
+
+exports.viewCompanyData=async function(req,res){
+    try {
+        db = new database();
+
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
+        return
+    }
+    surveyedYear=req.body.yoi
+    query1= "SELECT * FROM basic_information Where surveyed_year=?"
+
+    try {
+        
+        result = await db.query(query1, [surveyedYear])
+        res.send(result)
+        console.log(result)
+
+    } catch (error) {
+        console.log("error")
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+
+
+
+
+}
