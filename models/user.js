@@ -214,15 +214,52 @@ exports.viewCompanyData=async function(req,res){
     }
     
     surveyedYear=req.body.yoi
-    query1= "SELECT * FROM basic_information Where surveyed_year=?"
+    companyName=req.body.name
+    query1= "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
+    query2="SELECT * FROM annual_turnover WHERE id=?"
+    query3="SELECT * FROM building_captial WHERE id=?"
+    query4="SELECT * FROM business_progressiona WHERE id=?"
+    query5="SELECT * FROM capital_investment WHERE id=?"
+    query6="SELECT * FROM company WHERE id=?"
+    query7="SELECT * FROM contact_details WHERE id=?"
+    query8="SELECT * FROM energy_consumption WHERE id=?"
+    query9="SELECT * FROM furnace WHERE id=?"
+    query10="SELECT * FROM interviewer WHERE id=?"
+    query11="SELECT * FROM land_capital WHERE id=?"
+    query12="SELECT * FROM location WHERE id=?"
+    query13="SELECT * FROM machinery WHERE id=?"
+    query14="SELECT * FROM other_products_sold WHERE id=?"
+    query15="SELECT * FROM ownership_registration WHERE id=?"
+    query16="SELECT * FROM plant_floor WHERE id=?"
+    query17="SELECT * FROM products WHERE id=?"
+    query18="SELECT * FROM products_sold WHERE id=?"
+    query19="SELECT * FROM propertier_contact_person WHERE id=?"
+    query20="SELECT * FROM property_ownership WHERE id=?"
+    query21="SELECT * FROM raw_materials WHERE id=?"
+    query22="SELECT * FROM under_heating WHERE id=?"
+    query23="SELECT * FROM waste_generated WHERE id=?"
+    query24="SELECT * FROM working_capital WHERE id=?"
+
+
+
+
 
     try {
         
         result = await db.query(query1, [surveyedYear])
-        res.send(result)
-        console.log(result)
+        var id= (result[0].id)
 
     } catch (error) {
+        console.log("error")
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+    try{
+
+
+
+    }catch(error){
         console.log("error")
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
@@ -247,7 +284,7 @@ exports.viewSurveyForm=async function(req,res){
     }
     
     surveyedYear=req.body.yoi
-    query1= "SELECT * FROM basic_information Where surveyed_year=?"
+    query1= "SELECT id FROM basic_information Where surveyed_year=?"
 
     try {
         
