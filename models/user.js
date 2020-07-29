@@ -212,6 +212,7 @@ exports.viewCompanyData=async function(req,res){
         res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
         return
     }
+    
     surveyedYear=req.body.yoi
     query1= "SELECT * FROM basic_information Where surveyed_year=?"
 
@@ -219,6 +220,39 @@ exports.viewCompanyData=async function(req,res){
         
         result = await db.query(query1, [surveyedYear])
         res.send(result)
+        console.log(result)
+
+    } catch (error) {
+        console.log("error")
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+
+
+
+
+}
+
+
+exports.viewSurveyForm=async function(req,res){
+    try {
+        db = new database();
+
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
+        return
+    }
+    
+    surveyedYear=req.body.yoi
+    query1= "SELECT * FROM basic_information Where surveyed_year=?"
+
+    try {
+        
+        result = await db.query(query1, [surveyedYear])
+        res.send({ 'code': 200, 'message': 'Success','data':result })
         console.log(result)
 
     } catch (error) {
