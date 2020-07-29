@@ -203,7 +203,7 @@ exports.getCompanyData = async function (req, res) {
 
 
 
-exports.viewCompanyData  = async function (req, res) {
+exports.viewCompanyData = async function (req, res) {
     try {
         db = new database();
 
@@ -240,16 +240,12 @@ exports.viewCompanyData  = async function (req, res) {
     query23 = "SELECT * FROM waste_generated WHERE id=?"
     query24 = "SELECT * FROM working_captial WHERE id=?"
 
-
-
-
-
     try {
 
         result = await db.query(query1, [companyName, surveyedYear])
         var companyid = (result[0].id)
         console.log(companyid)
-        
+
 
     } catch (error) {
         console.log("error")
@@ -282,19 +278,15 @@ exports.viewCompanyData  = async function (req, res) {
         waste_generated = await db.query(query23, [companyid])
         working_capital = await db.query(query24, [companyid])
 
-        const result = { annual_turnover, building_capital, business_progression, capital_investment, company, contact_details, energy_consumption, furnace, interviewer, land_capital, location, machinery, other_product_sold, ownership_registration, plant_floor, products, products_sold, propertier_contact_person, property_ownership, raw_materials, under_heating, waste_generated, working_capital}
-        res.send({ 'code': 200, 'message': 'success',result:result })
+        const result = { annual_turnover, building_capital, business_progression, capital_investment, company, contact_details, energy_consumption, furnace, interviewer, land_capital, location, machinery, other_product_sold, ownership_registration, plant_floor, products, products_sold, propertier_contact_person, property_ownership, raw_materials, under_heating, waste_generated, working_capital }
+        
+        res.send({ 'code': 200, 'message': 'success', 'surveyData': result })
+
     } catch (error) {
         console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
-
-
-
-
-
-
 }
 
 
@@ -315,18 +307,10 @@ exports.viewSurveys = async function (req, res) {
 
         result = await db.query(query1, [surveyedYear])
         res.send({ 'code': 200, 'message': 'Success', 'companyData': result })
-        console.log(result)
 
     } catch (error) {
         console.log(error)
-        console.log("checkfff")
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
-
-
-
-
-
-
 }
