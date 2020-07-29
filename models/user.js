@@ -217,6 +217,7 @@ exports.viewCompanyData = async function (req, res) {
     query4 = "SELECT * FROM business_progression WHERE id=?"
     query5 = "SELECT * FROM capital_investment WHERE id=?"
     query6 = "SELECT * FROM company WHERE id=?"
+    query6 = "SELECT * FROM company WHERE id=?"
     query7 = "SELECT * FROM contact_details WHERE id=?"
     query8 = "SELECT * FROM energy_consumption WHERE id=?"
     query9 = "SELECT * FROM furnace WHERE id=?"
@@ -235,6 +236,7 @@ exports.viewCompanyData = async function (req, res) {
     query22 = "SELECT * FROM under_heating WHERE id=?"
     query23 = "SELECT * FROM waste_generated WHERE id=?"
     query24 = "SELECT * FROM working_captial WHERE id=?"
+    query25 = "SELECT * FROM company_category WHERE id=?"
 
     try{
         annual_turnover = await db.query(query2, [companyid])
@@ -242,6 +244,7 @@ exports.viewCompanyData = async function (req, res) {
         business_progression = await db.query(query4, [companyid])
         capital_investment = await db.query(query5, [companyid])
         company = await db.query(query6, [companyid])
+        company_category=await db.query(query25, [companyid])
         contact_details = await db.query(query7, [companyid])
         energy_consumption = await db.query(query8, [companyid])
         furnace = await db.query(query9, [companyid])
@@ -261,7 +264,7 @@ exports.viewCompanyData = async function (req, res) {
         waste_generated = await db.query(query23, [companyid])
         working_capital = await db.query(query24, [companyid])
 
-        const result = { annual_turnover, building_capital, business_progression, capital_investment, company, contact_details, energy_consumption, furnace, interviewer, land_capital, location, machinery, other_product_sold, ownership_registration, plant_floor, products, products_sold, propertier_contact_person, property_ownership, raw_materials, under_heating, waste_generated, working_capital }
+        const result = { annual_turnover, building_capital, business_progression, capital_investment, company,company_category, contact_details, energy_consumption, furnace, interviewer, land_capital, location, machinery, other_product_sold, ownership_registration, plant_floor, products, products_sold, propertier_contact_person, property_ownership, raw_materials, under_heating, waste_generated, working_capital }
         
         res.send({ 'code': 200, 'message': 'success', 'surveyData': result })
 
@@ -315,6 +318,8 @@ exports.deleteSurveryForm=async function(req,res){
         res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
         return
     }
+    companyid=req.body.id;
+
 
     
 }
