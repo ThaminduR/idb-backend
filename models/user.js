@@ -294,7 +294,6 @@ exports.viewSurveys = async function (req, res) {
         result = await db.query(query1, [surveyedYear])
 
         res.send({ 'code': 200, 'message': 'Success', 'companyData': result })
-        console.log(result)
 
     } catch (error) {
         console.log(error)
