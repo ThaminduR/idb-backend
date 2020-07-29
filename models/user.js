@@ -65,8 +65,8 @@ exports.getCompanyData = async function (req, res) {
             proprietor = req.body.proprietor,
             turnover = req.body.turnover,
             local_employees = req.body.local_employees,
-            
-        foreign_employees = req.body.foreign_employees,
+
+            foreign_employees = req.body.foreign_employees,
             yoe = req.body.yoe,
             business_type = req.body.business_type,
             reg_no = req.body.reg_no,
@@ -105,19 +105,19 @@ exports.getCompanyData = async function (req, res) {
             usage_steel = req.body.under_heating,
             energy_consumption = req.body.energy
 
-        
 
-        
+
+
 
         try {
             await db.query("START TRANSACTION")
-            
+
 
             await db.query(query2, [companyName, province, district, dsDivision, gnDivision, latitude, longitude, address, telenumber, email, fax, website, turnover, local_employees, foreign_employees,
                 yoe, business_type, reg_no, registered_place, industry_reg, industry_reg_no, industry_registered_place, land_area, land_value, building_area, building_value, machine_value, utilities_value,
                 total_capital_investment, raw_mat_value, semi_goods_value, goods_value, total_working_capital, owned_site, rented_site, interviewer, yoi, area, usage_steel])
 
-            
+
             result = await db.query(query3, [companyName])
 
             var companyid = (result[0].id)
@@ -162,9 +162,9 @@ exports.getCompanyData = async function (req, res) {
                 await db.query(query11, [companyid, element.metal, element.type, element.state, element.units, element.weight])
             }
 
-            
+
             await db.query(query12, [companyid, markets.local_retail, markets.local_companies, markets.export])
-            
+
 
 
             await db.query(query13, [companyid, other_markets.name, other_markets.percentage])
@@ -203,7 +203,7 @@ exports.getCompanyData = async function (req, res) {
 
 
 
-exports.viewCompanyData=async function(req,res){
+exports.viewCompanyData = async function (req, res) {
     try {
         db = new database();
 
@@ -212,42 +212,44 @@ exports.viewCompanyData=async function(req,res){
         res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
         return
     }
-    
-    surveyedYear=req.body.yoi
-    companyName=req.body.name
-    query1= "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
-    query2="SELECT * FROM annual_turnover WHERE id=?"
-    query3="SELECT * FROM building_captial WHERE id=?"
-    query4="SELECT * FROM business_progressiona WHERE id=?"
-    query5="SELECT * FROM capital_investment WHERE id=?"
-    query6="SELECT * FROM company WHERE id=?"
-    query7="SELECT * FROM contact_details WHERE id=?"
-    query8="SELECT * FROM energy_consumption WHERE id=?"
-    query9="SELECT * FROM furnace WHERE id=?"
-    query10="SELECT * FROM interviewer WHERE id=?"
-    query11="SELECT * FROM land_capital WHERE id=?"
-    query12="SELECT * FROM location WHERE id=?"
-    query13="SELECT * FROM machinery WHERE id=?"
-    query14="SELECT * FROM other_products_sold WHERE id=?"
-    query15="SELECT * FROM ownership_registration WHERE id=?"
-    query16="SELECT * FROM plant_floor WHERE id=?"
-    query17="SELECT * FROM products WHERE id=?"
-    query18="SELECT * FROM products_sold WHERE id=?"
-    query19="SELECT * FROM propertier_contact_person WHERE id=?"
-    query20="SELECT * FROM property_ownership WHERE id=?"
-    query21="SELECT * FROM raw_materials WHERE id=?"
-    query22="SELECT * FROM under_heating WHERE id=?"
-    query23="SELECT * FROM waste_generated WHERE id=?"
-    query24="SELECT * FROM working_capital WHERE id=?"
+
+    surveyedYear = req.body.yoi
+    companyName = req.body.name
+    query1 = "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
+    query2 = "SELECT * FROM annual_turnover WHERE id=?"
+    query3 = "SELECT * FROM building_capital WHERE id=?"
+    query4 = "SELECT * FROM business_progression WHERE id=?"
+    query5 = "SELECT * FROM capital_investment WHERE id=?"
+    query6 = "SELECT * FROM company WHERE id=?"
+    query7 = "SELECT * FROM contact_details WHERE id=?"
+    query8 = "SELECT * FROM energy_consumption WHERE id=?"
+    query9 = "SELECT * FROM furnace WHERE id=?"
+    query10 = "SELECT * FROM interviewer WHERE id=?"
+    query11 = "SELECT * FROM land_capital WHERE id=?"
+    query12 = "SELECT * FROM location WHERE id=?"
+    query13 = "SELECT * FROM machinery WHERE id=?"
+    query14 = "SELECT * FROM other_product_sold WHERE id=?"
+    query15 = "SELECT * FROM ownership_registration WHERE id=?"
+    query16 = "SELECT * FROM plant_floor WHERE id=?"
+    query17 = "SELECT * FROM products WHERE id=?"
+    query18 = "SELECT * FROM products_sold WHERE id=?"
+    query19 = "SELECT * FROM propertier_contact_person WHERE id=?"
+    query20 = "SELECT * FROM property_ownership WHERE id=?"
+    query21 = "SELECT * FROM raw_materials WHERE id=?"
+    query22 = "SELECT * FROM under_heating WHERE id=?"
+    query23 = "SELECT * FROM waste_generated WHERE id=?"
+    query24 = "SELECT * FROM working_captial WHERE id=?"
 
 
 
 
 
     try {
+
+        result = await db.query(query1, [companyName, surveyedYear])
+        var companyid = (result[0].id)
+        console.log(companyid)
         
-        result = await db.query(query1, [surveyedYear])
-        res.send({ 'code': 200, 'message': 'Success 1','companyData':result })
 
     } catch (error) {
         console.log("error")
@@ -255,12 +257,35 @@ exports.viewCompanyData=async function(req,res){
         return
     }
 
-    try{
+    try {
+        annual_turnover = await db.query(query2, [companyid])
+        building_capital = await db.query(query3, [companyid])
+        business_progression = await db.query(query4, [companyid])
+        capital_investment = await db.query(query5, [companyid])
+        company = await db.query(query6, [companyid])
+        contact_details = await db.query(query7, [companyid])
+        energy_consumption = await db.query(query8, [companyid])
+        furnace = await db.query(query9, [companyid])
+        interviewer = await db.query(query10, [companyid])
+        land_capital = await db.query(query11, [companyid])
+        location = await db.query(query12, [companyid])
+        machinery = await db.query(query13, [companyid])
+        other_product_sold = await db.query(query14, [companyid])
+        ownership_registration = await db.query(query15, [companyid])
+        plant_floor = await db.query(query16, [companyid])
+        products = await db.query(query17, [companyid])
+        products_sold = await db.query(query18, [companyid])
+        propertier_contact_person = await db.query(query19, [companyid])
+        property_ownership = await db.query(query20, [companyid])
+        raw_materials = await db.query(query21, [companyid])
+        under_heating = await db.query(query22, [companyid])
+        waste_generated = await db.query(query23, [companyid])
+        working_capital = await db.query(query24, [companyid])
 
-
-
-    }catch(error){
-        console.log("error")
+        const result = { annual_turnover, building_capital, business_progression, capital_investment, company, contact_details, energy_consumption, furnace, interviewer, land_capital, location, machinery, other_product_sold, ownership_registration, plant_floor, products, products_sold, propertier_contact_person, property_ownership, raw_materials, under_heating, waste_generated, working_capital}
+        res.send({ 'code': 200, 'message': 'success',result:result })
+    } catch (error) {
+        console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
@@ -273,7 +298,7 @@ exports.viewCompanyData=async function(req,res){
 }
 
 
-exports.viewSurveyForm=async function(req,res){
+exports.viewSurveyForm = async function (req, res) {
     try {
         db = new database();
 
@@ -282,14 +307,14 @@ exports.viewSurveyForm=async function(req,res){
         res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
         return
     }
-    
-    surveyedYear=req.body.yoi
-    query1= "SELECT id FROM basic_information Where surveyed_year=?"
+
+    surveyedYear = req.body.yoi
+    query1 = "SELECT id FROM basic_information Where surveyed_year=?"
 
     try {
-        
+
         result = await db.query(query1, [surveyedYear])
-        res.send({ 'code': 200, 'message': 'Success','data':result })
+        res.send({ 'code': 200, 'message': 'Success', 'data': result })
         console.log(result)
 
     } catch (error) {
