@@ -350,3 +350,26 @@ exports.deleteSurveryForm = async function (req, res) {
 
 
 }
+
+exports.viewDeleted=async function(res){
+    try{
+        db=new database();
+    }catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
+        return
+    }
+    query="SELECT * FROM deletedcompany"
+
+    try{
+        result = await db.query(query)
+
+        res.send({ 'code': 200, 'message': 'Success', 'deletedcompany': result })
+    }catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+}
