@@ -322,13 +322,21 @@ exports.deleteSurveryForm = async function (req, res) {
     telenumber = req.body.telenumber
     address = req.body.address
     query1 = "CALL DeleteCompany(?)"
-    query2 = "INSERT INTO deletedcompany (name,telenumber,address) VALUES (?,?,?)"
+    query2 = "INSERT INTO deletedcompany (name,telenumber,address.district,surveyed_year) VALUES (?,?,?,?,?)"
+    query3= "SELECT surveyed_year from company WHERE id=?"
+    query4="SELECT district from location WHERE id=?"
 
     try {
         await db.query("START TRANSACTION")
+        result3=await db.query(query3, [companyid])
+        surveyed_year= await result3[0].surveyed_year
+
+        result4=await db.query(query4, [companyid])
+        district= await result3[0].district
+
 
         await db.query(query1, [companyid])
-        await db.query(query2, [name, telenumber, address])
+        await db.query(query2, [name, telenumber, address,district,surveyed_year])
 
         await db.query("COMMIT")
         res.send({ 'code': 200, 'message': 'Data Deleted Successfully' })
