@@ -1,5 +1,5 @@
 const database = require('../config/db');
-const { query } = require('express');
+
 
 exports.getFurnanceData = async function (req,res) {
     try {
@@ -12,6 +12,9 @@ exports.getFurnanceData = async function (req,res) {
     furnacetype=req.body.furnace
     capacity=req.body.capacity
     range=req.body.range
+
+    
+
 
     query1 = "SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) ORDER BY district WHERE furnace_type=? AND capacity>=?"
     query2="SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) ORDER BY district WHERE furnace_type=? AND capacity<?"
