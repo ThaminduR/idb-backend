@@ -322,7 +322,7 @@ exports.deleteSurveryForm = async function (req, res) {
     telenumber = req.body.telenumber
     address = req.body.address
     query1 = "CALL DeleteCompany(?)"
-    query2 = "INSERT INTO deletedcompany (name,telenumber,address,district,surveyed_year) VALUES (?,?,?,?,?)"
+    query2 = "INSERT INTO deletedcompany (name,telenumber,address.district,surveyed_year) VALUES (?,?,?,?,?)"
     query3= "SELECT surveyed_year from company WHERE id=?"
     query4="SELECT district from location WHERE id=?"
 
