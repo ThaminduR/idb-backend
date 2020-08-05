@@ -1,15 +1,20 @@
 const database = require('../config/db');
 const { query } = require('express');
 
-exports.getFurnanceData = async function (res) {
+exports.getFurnanceData = async function (req,res) {
     try {
         db = new database();
     } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
     }
+    
+    furnacetype=req.body.furnace
+    capacity=req.body.capacity
+    range=req.body.range
 
-    query1 = "SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) ORDER BY district"
+    query1 = "SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) ORDER BY district WHERE furnace_type=? AND capacity>=?"
+    query2="SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) ORDER BY district WHERE furnace_type=? AND capacity<?"
     const districts = ['Kandy',
         'Matale',
         'Nuwara Eliya',
@@ -38,7 +43,12 @@ exports.getFurnanceData = async function (res) {
     const companydistrictlist=[]
 
     try {
-        result = await db.query(query1)
+
+        if(range=="Greater Than"){
+        result = await db.query(query1,[furnacetype,capacity])
+        }else{
+            result = await db.query(query2,[furnacetype,capacity])
+        }
         //console.log(result)
     } catch (error) {
         console.log("error")
