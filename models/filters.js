@@ -47,7 +47,7 @@ exports.getFurnanceData = async function (req, res) {
 
     try {
 
-        if (range == "Greater Than") {
+        if (range == "Greater") {
             result = await db.query(query1, [furnacetype, capacity])
         } else {
             result = await db.query(query2, [furnacetype, capacity])
