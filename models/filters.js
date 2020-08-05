@@ -10,14 +10,14 @@ exports.getFurnanceData = async function (req,res) {
     }
     
     furnacetype=req.body.furnace
-    capacity=req.body.capacity
+    capacity=Number(req.body.capacity)
     range=req.body.range
 
     
 
 
-    query1 = "SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) ORDER BY district WHERE furnace_type=? AND capacity>=?"
-    query2="SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) ORDER BY district WHERE furnace_type=? AND capacity<?"
+    query1 = "SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) WHERE furnace_type=? AND capacity>=?  ORDER BY district"
+    query2="SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) WHERE furnace_type=? AND capacity<? ORDER BY district"
     const districts = ['Kandy',
         'Matale',
         'Nuwara Eliya',
@@ -54,7 +54,7 @@ exports.getFurnanceData = async function (req,res) {
         }
         //console.log(result)
     } catch (error) {
-        console.log("error")
+        console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
@@ -79,7 +79,7 @@ exports.getFurnanceData = async function (req,res) {
     });
     res.send({ 'code': 200, 'message': 'Success', 'companydistrictlist': companydistrictlist })
 }catch(error){
-    console.log("error")
+    console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
 }

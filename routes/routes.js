@@ -10,7 +10,7 @@ router.post('/viewSurveys', middleware.verifytoken, (req, res) => { User.viewSur
 router.post('/viewCompany', middleware.verifytoken, (req, res) => { User.viewCompanyData(req, res) })
 router.post('/deleteCompany', middleware.verifytoken, (req, res) => { User.deleteSurveryForm(req, res) })
 router.get('/deletedSurveys', middleware.verifytoken, (req, res) => { User.viewDeleted(res) })
-router.post('/getFurnanceData', middleware.verifytoken, (req, res) => { Filter.getFurnanceData(res) })
+router.post('/getFurnanceData', middleware.verifytoken, (req, res) => { Filter.getFurnanceData(req,res) })
 
 
 module.exports = router;
