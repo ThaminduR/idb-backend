@@ -1,23 +1,23 @@
 const database = require('../config/db');
 
 
-exports.getFurnanceData = async function (req,res) {
+exports.getFurnanceData = async function (req, res) {
     try {
         db = new database();
     } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
     }
-    
-    furnacetype=req.body.furnace
-    capacity=Number(req.body.capacity)
-    range=req.body.range
 
-    
+    furnacetype = req.body.furnace
+    capacity = Number(req.body.capacity)
+    range = req.body.range
+
+
 
 
     query1 = "SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) WHERE furnace_type=? AND capacity>=?  ORDER BY district"
-    query2="SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) WHERE furnace_type=? AND capacity<? ORDER BY district"
+    query2 = "SELECT name,district FROM (furnace NATURAL JOIN location) JOIN company USING (id) WHERE furnace_type=? AND capacity<? ORDER BY district"
     const districts = ['Kandy',
         'Matale',
         'Nuwara Eliya',
@@ -43,14 +43,14 @@ exports.getFurnanceData = async function (req,res) {
         'Colombo',
         'Gampaha',
         'Kalutara']
-    const companydistrictlist=[]
+    const companydistrictlist = {}
 
     try {
 
-        if(range=="Greater Than"){
-        result = await db.query(query1,[furnacetype,capacity])
-        }else{
-            result = await db.query(query2,[furnacetype,capacity])
+        if (range == "Greater Than") {
+            result = await db.query(query1, [furnacetype, capacity])
+        } else {
+            result = await db.query(query2, [furnacetype, capacity])
         }
         //console.log(result)
     } catch (error) {
@@ -58,33 +58,31 @@ exports.getFurnanceData = async function (req,res) {
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
     }
-    try{
-    districts.forEach(selecteddistrict => {
-        // console.log(selecteddistrict)
-        districtCompany={}
-        companylist=[]
-        result.forEach(company => {
-            // console.log(company)
-            
-            if (company.district==selecteddistrict) {
-                // console.log("YES")
-                companylist.push(company.name)
-                
-            }
-        });
-        // console.log(companylist)
-        districtCompany={'district':selecteddistrict,'companyList':companylist}
-        companydistrictlist.push(districtCompany)
+    try {
+        districts.forEach(selecteddistrict => {
+            // console.log(selecteddistrict)
+            companylist = []
+            result.forEach(company => {
+                // console.log(company)
 
-    });
-    res.send({ 'code': 200, 'message': 'Success', 'companydistrictlist': companydistrictlist })
-}catch(error){
-    console.log(error)
+                if (company.district == selecteddistrict) {
+                    // console.log("YES")
+                    companylist.push(company.name)
+
+                }
+            });
+            // console.log(companylist)
+            companydistrictlist[selecteddistrict] = companylist
+
+        });
+        res.send({ 'code': 200, 'message': 'Success', 'companydistrictlist': companydistrictlist })
+    } catch (error) {
+        console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
-}
+    }
 
-    
+
 
 
 
