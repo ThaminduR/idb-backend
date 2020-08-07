@@ -87,3 +87,42 @@ exports.getFurnanceData = async function (req, res) {
 
 
 }
+
+
+
+exports.getProductData = async function (req, res) {
+    try {
+        db = new database();
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+
+    metal = req.body.metal
+    
+
+
+
+    query1 = "SELECT district,SUM(weight) FROM `products` NATURAL JOIN location WHERE metal=? AND state=? GROUP BY district"
+    query2 = "SELECT district,SUM(metal_usage) FROM `raw_materials` NATURAL JOIN location WHERE metal=? GROUP BY district"
+    
+    try{
+        productList=await db.query(query1,[metal,"Existing"])
+        rawMaterialList= await db.query(query2,[metal])
+
+        result={"productList":productList,
+        "rawMaterialList":rawMaterialList}
+        res.send({ 'code': 200, 'message': 'success' ,'data':result})
+
+
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+
+
+
+}
