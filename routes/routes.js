@@ -13,5 +13,6 @@ router.get('/deletedSurveys', middleware.verifytoken, (req, res) => { User.viewD
 router.post('/getFurnanceData', middleware.verifytoken, (req, res) => { Filter.getFurnanceData(req,res) })
 router.post('/getProductData', middleware.verifytoken, (req, res) => { Filter.getProductData(req,res) })
 router.post('/getRawMaterialData', middleware.verifytoken, (req, res) => { Filter.getRawMaterialData(req,res) })
+router.post('/getProductionData', middleware.verifytoken, (req, res) => { Filter.getProductionData(req,res) })
 
 module.exports = router;
