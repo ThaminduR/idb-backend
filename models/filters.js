@@ -165,12 +165,16 @@ exports.getRawMaterialData = async function (req, res) {
 
 
 exports.getProductionData = async function (req, res) {
+
+
     try {
         db = new database();
     } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
     }
+
+    state = req.body.state
 
     query1 = "SELECT product,SUM(weight) FROM `products` NATURAL JOIN location WHERE district=? AND state=? GROUP BY product"
     const districts = ['Kandy',
@@ -201,10 +205,11 @@ exports.getProductionData = async function (req, res) {
     // const productionDistrictList = []
 
     try {
+
         const productionDistrictList = []
 
         districts.forEach(async district => {
-            result = await db.query(query1, [district, "Existing"])
+            result = await db.query(query1, [district, state])
 
             resultList = {
                 district,
