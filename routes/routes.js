@@ -12,6 +12,6 @@ router.post('/deleteCompany', middleware.verifytoken, (req, res) => { User.delet
 router.get('/deletedSurveys', middleware.verifytoken, (req, res) => { User.viewDeleted(res) })
 router.post('/getFurnanceData', middleware.verifytoken, (req, res) => { Filter.getFurnanceData(req,res) })
 router.post('/getProductData', middleware.verifytoken, (req, res) => { Filter.getProductData(req,res) })
-
+router.post('/getRawMaterialData', middleware.verifytoken, (req, res) => { Filter.getRawMaterialData(req,res) })
 
 module.exports = router;
