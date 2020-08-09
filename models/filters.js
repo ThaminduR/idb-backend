@@ -206,25 +206,25 @@ exports.getProductionData = async function (req, res) {
 
     try {
 
-        const productionDistrictList = []
+        
 
         districts.forEach(async district => {
-            result = await db.query(query1, [district, state])
+            result = JSON.stringify(await db.query(query1, [district, state]))
 
             resultList = {
                 district,
                 result
             }
-            console.log(resultList)
+            
 
             productionDistrictList.push(resultList)
-            console.log(productionDistrictList)
+            
 
 
 
         });
 
-
+        console.log(productionDistrictList)
         res.send({ 'code': 200, 'message': 'success', 'Data': { "productionDistrictList": productionDistrictList } })
     } catch (error) {
         console.log(error)
