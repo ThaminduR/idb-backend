@@ -202,7 +202,7 @@ exports.getProductionData = async function (req, res) {
         'Colombo',
         'Gampaha',
         'Kalutara']
-    // const productionDistrictList = []
+    const productionDistrictList = []
 
     try {
 
@@ -218,7 +218,7 @@ exports.getProductionData = async function (req, res) {
             console.log(resultList)
 
             productionDistrictList.push(resultList)
-            // console.log(productionDistrictList)
+            console.log(productionDistrictList)
 
 
 
