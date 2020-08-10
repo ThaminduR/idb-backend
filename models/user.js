@@ -276,6 +276,43 @@ exports.viewCompanyData = async function (req, res) {
 }
 
 
+exports.viewInBrief = async function (req, res) {
+    try {
+        db = new database();
+
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
+        return
+    }
+
+    companyid = req.body.id
+    query1 = "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
+    
+    query17 = "SELECT * FROM products WHERE id=?"
+    
+    query21 = "SELECT * FROM raw_materials WHERE id=?"
+    
+
+    try {
+        
+        products = await db.query(query17, [companyid])
+        raw_materials = await db.query(query21, [companyid])
+        
+
+        const result = { products, raw_materials }
+
+        res.send({ 'code': 200, 'message': 'success', 'dataInBrief': result })
+
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+}
+
+
+
 exports.viewSurveys = async function (req, res) {
     try {
         db = new database();
