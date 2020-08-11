@@ -164,78 +164,78 @@ exports.getRawMaterialData = async function (req, res) {
 
 
 
-exports.getProductionData = async function (req, res) {
+// exports.getProductionData = async function (req, res) {
 
 
-    try {
-        db = new database();
-    } catch (error) {
-        console.log(error);
-        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
-    }
+//     try {
+//         db = new database();
+//     } catch (error) {
+//         console.log(error);
+//         res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+//     }
 
-    state = req.body.state
+//     state = req.body.state
 
-    query1 = "SELECT product,SUM(weight) FROM `products` NATURAL JOIN location WHERE district=? AND state=? GROUP BY product"
-    const districts = ['Kandy',
-        'Matale',
-        'Nuwara Eliya',
-        'Ampara',
-        'Batticaloa',
-        'Trincomalee',
-        'Anuradhapura',
-        'Polonnaruwa',
-        'Kurunegala',
-        'Puttalam',
-        'Jaffna',
-        'Kilinochchi',
-        'Mannar',
-        'Mullaitivu',
-        'Vavuniya',
-        'Kegalle',
-        'Ratnapura',
-        'Galle',
-        'Hambantota',
-        'Matara',
-        'Badulla',
-        'Moneragala',
-        'Colombo',
-        'Gampaha',
-        'Kalutara']
-    const productionDistrictList = []
+//     query1 = "SELECT product,SUM(weight) FROM `products` NATURAL JOIN location WHERE district=? AND state=? GROUP BY product"
+//     const districts = ['Kandy',
+//         'Matale',
+//         'Nuwara Eliya',
+//         'Ampara',
+//         'Batticaloa',
+//         'Trincomalee',
+//         'Anuradhapura',
+//         'Polonnaruwa',
+//         'Kurunegala',
+//         'Puttalam',
+//         'Jaffna',
+//         'Kilinochchi',
+//         'Mannar',
+//         'Mullaitivu',
+//         'Vavuniya',
+//         'Kegalle',
+//         'Ratnapura',
+//         'Galle',
+//         'Hambantota',
+//         'Matara',
+//         'Badulla',
+//         'Moneragala',
+//         'Colombo',
+//         'Gampaha',
+//         'Kalutara']
+//     const productionDistrictList = []
 
-    try {
+//     try {
 
         
 
-        districts.forEach(async district => {
-            result = JSON.stringify(await db.query(query1, [district, state]))
+//         await districts.forEach( district => {
+//             result = JSON.stringify(db.query(query1, [district, state]))
 
-            resultList = {
-                district,
-                result
-            }
+//             resultList = {
+//                 district,
+//                 result
+//             }
             
 
-            productionDistrictList.push(resultList)
+//             await productionDistrictList.push(resultList)
             
 
 
 
-        });
+//         });
 
-        console.log(productionDistrictList)
-        res.send({ 'code': 200, 'message': 'success', 'Data': { "productionDistrictList": productionDistrictList } })
-    } catch (error) {
-        console.log(error)
-        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
-        return
-    }
-
-
+//         console.log(productionDistrictList)
+//         res.send({ 'code': 200, 'message': 'success', 'Data': { "productionDistrictList": productionDistrictList } })
+//     } catch (error) {
+//         console.log(error)
+//         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+//         return
+//     }
 
 
 
 
-}
+
+
+// }
 

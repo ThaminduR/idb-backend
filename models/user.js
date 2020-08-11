@@ -325,12 +325,19 @@ exports.viewSurveys = async function (req, res) {
 
     surveyedYear = req.body.yoi
     query1 = "SELECT * FROM basic_information"
+    query17 = "SELECT id,metal,product,weight FROM products WHERE state=?"
+    query21 = "SELECT * FROM raw_materials"
 
     try {
 
-        result = await db.query(query1, [surveyedYear])
+        result1 = await db.query(query1)
+        result2 = await db.query(query17,["Existing"])
+        result3 = await db.query(query21)
 
-        res.send({ 'code': 200, 'message': 'Success', 'companyData': result })
+        
+    
+
+        res.send({ 'code': 200, 'message': 'Success', 'companyData': result1,'products':result2,'raw_materials':result3 })
 
     } catch (error) {
         console.log(error)
