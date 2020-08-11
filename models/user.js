@@ -287,18 +287,18 @@ exports.viewInBrief = async function (req, res) {
     }
 
     companyid = req.body.id
-    query1 = "SELECT id FROM basic_information Where name=? AND surveyed_year=?"
-    
+
+
     query17 = "SELECT * FROM products WHERE id=?"
-    
+
     query21 = "SELECT * FROM raw_materials WHERE id=?"
-    
+
 
     try {
-        
+
         products = await db.query(query17, [companyid])
         raw_materials = await db.query(query21, [companyid])
-        
+
 
         const result = [ products, raw_materials ]
 
@@ -360,20 +360,20 @@ exports.deleteSurveryForm = async function (req, res) {
     address = req.body.address
     query1 = "CALL DeleteCompany(?)"
     query2 = "INSERT INTO deletedcompany (name,telenumber,address.district,surveyed_year) VALUES (?,?,?,?,?)"
-    query3= "SELECT surveyed_year from company WHERE id=?"
-    query4="SELECT district from location WHERE id=?"
+    query3 = "SELECT surveyed_year from company WHERE id=?"
+    query4 = "SELECT district from location WHERE id=?"
 
     try {
         await db.query("START TRANSACTION")
-        result3=await db.query(query3, [companyid])
-        surveyed_year= await result3[0].surveyed_year
+        result3 = await db.query(query3, [companyid])
+        surveyed_year = await result3[0].surveyed_year
 
-        result4=await db.query(query4, [companyid])
-        district= await result3[0].district
+        result4 = await db.query(query4, [companyid])
+        district = await result3[0].district
 
 
         await db.query(query1, [companyid])
-        await db.query(query2, [name, telenumber, address,district,surveyed_year])
+        await db.query(query2, [name, telenumber, address, district, surveyed_year])
 
         await db.query("COMMIT")
         res.send({ 'code': 200, 'message': 'Data Deleted Successfully' })
@@ -396,21 +396,21 @@ exports.deleteSurveryForm = async function (req, res) {
 
 }
 
-exports.viewDeleted=async function(res){
-    try{
-        db=new database();
-    }catch (error) {
+exports.viewDeleted = async function (res) {
+    try {
+        db = new database();
+    } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'Database Error.Try Again' })
         return
     }
-    query="SELECT * FROM deletedcompany"
+    query = "SELECT * FROM deletedcompany"
 
-    try{
+    try {
         result = await db.query(query)
 
         res.send({ 'code': 200, 'message': 'Success', 'deletedcompany': result })
-    }catch (error) {
+    } catch (error) {
         console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
         return
