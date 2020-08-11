@@ -8,9 +8,12 @@ router.get('/test', middleware.verifytoken, (req, res) => { User.test(req, res) 
 router.post('/addSurvey', middleware.verifytoken, (req, res) => { User.getCompanyData(req, res) })
 router.post('/viewSurveys', middleware.verifytoken, (req, res) => { User.viewSurveys(req, res) })
 router.post('/viewCompany', middleware.verifytoken, (req, res) => { User.viewCompanyData(req, res) })
+router.post('/viewInBrief', middleware.verifytoken, (req, res) => { User.viewInBrief(req, res) })
 router.post('/deleteCompany', middleware.verifytoken, (req, res) => { User.deleteSurveryForm(req, res) })
 router.get('/deletedSurveys', middleware.verifytoken, (req, res) => { User.viewDeleted(res) })
 router.post('/getFurnanceData', middleware.verifytoken, (req, res) => { Filter.getFurnanceData(req,res) })
-
+router.post('/getProductData', middleware.verifytoken, (req, res) => { Filter.getProductData(req,res) })
+router.post('/getRawMaterialData', middleware.verifytoken, (req, res) => { Filter.getRawMaterialData(req,res) })
+router.post('/getProductionData', middleware.verifytoken, (req, res) => { Filter.getProductionData(req,res) })
 
 module.exports = router;

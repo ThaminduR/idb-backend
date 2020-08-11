@@ -1,10 +1,5 @@
 #! /bin/bash
 
 cd /home/ubuntu/idb/idb-backend
-
-file=".env"
-
-if [ -f $file ] ; then 
-    sudo rm $file
-
-fi
+sudo rm .env
+pm2 delete idb

@@ -87,3 +87,155 @@ exports.getFurnanceData = async function (req, res) {
 
 
 }
+
+
+
+exports.getProductData = async function (req, res) {
+    try {
+        db = new database();
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+
+    metal = req.body.metal
+
+
+
+
+    query1 = "SELECT district,SUM(weight) FROM `products` NATURAL JOIN location WHERE metal=? AND state=? GROUP BY district"
+    // query2 = "SELECT district,SUM(metal_usage) FROM `raw_materials` NATURAL JOIN location WHERE metal=? GROUP BY district"
+
+    try {
+        productList = await db.query(query1, [metal, "Existing"])
+        // rawMaterialList= await db.query(query2,[metal])
+
+
+        res.send({ 'code': 200, 'message': 'success', 'data': productList })
+
+
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+
+
+
+}
+
+exports.getRawMaterialData = async function (req, res) {
+    try {
+        db = new database();
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+
+    metal = req.body.metal
+
+
+
+
+    // query1 = "SELECT district,SUM(weight) FROM `products` NATURAL JOIN location WHERE metal=? AND state=? GROUP BY district"
+    query2 = "SELECT district,SUM(metal_usage) FROM `raw_materials` NATURAL JOIN location WHERE metal=? GROUP BY district"
+
+    try {
+        // productList=await db.query(query1,[metal,"Existing"])
+        rawMaterialList = await db.query(query2, [metal])
+
+
+        res.send({ 'code': 200, 'message': 'success', 'data': rawMaterialList })
+
+
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+
+
+
+}
+
+
+
+exports.getProductionData = async function (req, res) {
+
+
+    try {
+        db = new database();
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+
+    state = req.body.state
+
+    query1 = "SELECT product,SUM(weight) FROM `products` NATURAL JOIN location WHERE district=? AND state=? GROUP BY product"
+    const districts = ['Kandy',
+        'Matale',
+        'Nuwara Eliya',
+        'Ampara',
+        'Batticaloa',
+        'Trincomalee',
+        'Anuradhapura',
+        'Polonnaruwa',
+        'Kurunegala',
+        'Puttalam',
+        'Jaffna',
+        'Kilinochchi',
+        'Mannar',
+        'Mullaitivu',
+        'Vavuniya',
+        'Kegalle',
+        'Ratnapura',
+        'Galle',
+        'Hambantota',
+        'Matara',
+        'Badulla',
+        'Moneragala',
+        'Colombo',
+        'Gampaha',
+        'Kalutara']
+    const productionDistrictList = []
+
+    try {
+
+        
+
+        districts.forEach(async district => {
+            result = JSON.stringify(await db.query(query1, [district, state]))
+
+            resultList = {
+                district,
+                result
+            }
+            
+
+            productionDistrictList.push(resultList)
+            
+
+
+
+        });
+
+        console.log(productionDistrictList)
+        res.send({ 'code': 200, 'message': 'success', 'Data': { "productionDistrictList": productionDistrictList } })
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+
+
+
+
+}
+
