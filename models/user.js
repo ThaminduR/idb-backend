@@ -325,7 +325,7 @@ exports.viewSurveys = async function (req, res) {
 
     surveyedYear = req.body.yoi
     query1 = "SELECT * FROM basic_information"
-    query17 = "SELECT * FROM products WHERE state=?"
+    query17 = "SELECT metal,product,weight FROM products WHERE state=?"
     query21 = "SELECT * FROM raw_materials"
 
     try {
