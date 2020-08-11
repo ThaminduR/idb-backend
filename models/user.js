@@ -300,7 +300,7 @@ exports.viewInBrief = async function (req, res) {
         raw_materials = await db.query(query21, [companyid])
         
 
-        const result = { products, raw_materials }
+        const result = [ products, raw_materials ]
 
         res.send({ 'code': 200, 'message': 'success', 'dataInBrief': result })
 
