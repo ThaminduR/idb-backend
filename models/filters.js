@@ -208,8 +208,8 @@ exports.getProductionData = async function (req, res) {
 
         
 
-        districts.forEach(async district => {
-            result = JSON.stringify(await db.query(query1, [district, state]))
+        await districts.forEach( district => {
+            result = JSON.stringify(db.query(query1, [district, state]))
 
             resultList = {
                 district,
@@ -217,7 +217,7 @@ exports.getProductionData = async function (req, res) {
             }
             
 
-            productionDistrictList.push(resultList)
+            await productionDistrictList.push(resultList)
             
 
 
