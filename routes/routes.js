@@ -15,5 +15,6 @@ router.post('/getFurnanceData', middleware.verifytoken, (req, res) => { Filter.g
 router.post('/getProductData', middleware.verifytoken, (req, res) => { Filter.getProductData(req,res) })
 router.post('/getRawMaterialData', middleware.verifytoken, (req, res) => { Filter.getRawMaterialData(req,res) })
 router.post('/getProductionData', middleware.verifytoken, (req, res) => { Filter.getProductionData(req,res) })
-
+router.post('/getIndustryData', middleware.verifytoken, (req,res) => { Filter.getIndustryData(req,res) })
+router.post('/getMachineryInvestmentData', middleware.verifytoken, (req,res) => { Filter.getMachineryInvestmentData(req,res) })
 module.exports = router;

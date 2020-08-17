@@ -90,7 +90,7 @@ exports.getFurnanceData = async function (req, res) {
 
 
 
-exports.getProductData = async function (req, res) {
+exports.getProductData = async function (req, res) {   //Average Production and Expected Production
     try {
         db = new database();
     } catch (error) {
@@ -99,6 +99,7 @@ exports.getProductData = async function (req, res) {
     }
 
     metal = req.body.metal
+    state = req.body.state
 
 
 
@@ -107,7 +108,7 @@ exports.getProductData = async function (req, res) {
     // query2 = "SELECT district,SUM(metal_usage) FROM `raw_materials` NATURAL JOIN location WHERE metal=? GROUP BY district"
 
     try {
-        productList = await db.query(query1, [metal, "Existing"])
+        productList = await db.query(query1, [metal, state])
         // rawMaterialList= await db.query(query2,[metal])
 
 
@@ -126,7 +127,7 @@ exports.getProductData = async function (req, res) {
 
 }
 
-exports.getRawMaterialData = async function (req, res) {
+exports.getRawMaterialData = async function (req, res) {     //Raw Materials
     try {
         db = new database();
     } catch (error) {
@@ -162,6 +163,69 @@ exports.getRawMaterialData = async function (req, res) {
 
 }
 
+
+exports.getIndustryData = async function (req,res) {
+    try {
+        db = new database();
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+
+
+    query = "SELECT district,COUNT(name) FROM company NATURAL JOIN location JOIN raw_materials USING (id) WHERE metal=? GROUP BY district"
+    query2 = "SELECT district,COUNT(name) FROM company NATURAL JOIN location JOIN raw_materials USING (id) WHERE metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? GROUP BY district"
+
+    try {
+
+        brass = await db.query(query, ["Brass"])
+        aluminum = await db.query(query, ["Aluminum"])
+        iron = await db.query(query, ["Iron"])
+        castIron = await db.query(query, ["Cast Iron"])
+        other = await db.query(query2, ["Stainless Steel", 'Magnesium', 'Copper', 'Zinc', 'LMS', 'High Carbon Steel', 'Manganese Steel', 'Other'])
+
+        industryData = { "Brass": brass, "Aluminum": aluminum, "Iron": iron, "Cast Iron": castIron, "Other": other }
+        console.log(industryData)
+
+        res.send({ 'code': 200, 'message': 'success', 'data': industryData })
+
+
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+}
+
+exports.getMachineryInvestmentData = async function (req,res) {
+    try {
+        db = new database();
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+
+
+    query = "SELECT district,SUM(total)FROM company NATURAL JOIN location JOIN capital_investment USING (id) GROUP BY district"
+    
+    try {
+
+        investment = await db.query(query)
+        
+
+        res.send({ 'code': 200, 'message': 'success', 'data': investment })
+
+
+    } catch (error) {
+        console.log(error)
+        res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
+        return
+    }
+
+
+}
 
 
 // exports.getProductionData = async function (req, res) {
@@ -206,7 +270,7 @@ exports.getRawMaterialData = async function (req, res) {
 
 //     try {
 
-        
+
 
 //         await districts.forEach( district => {
 //             result = JSON.stringify(db.query(query1, [district, state]))
@@ -215,10 +279,10 @@ exports.getRawMaterialData = async function (req, res) {
 //                 district,
 //                 result
 //             }
-            
+
 
 //             await productionDistrictList.push(resultList)
-            
+
 
 
 
