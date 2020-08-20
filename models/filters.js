@@ -104,8 +104,8 @@ exports.getProductionData = async function (req, res) {   //Production Data
 
 
 
-    query1 = "SELECT district,SUM(weight) FROM `products` NATURAL JOIN location WHERE metal=? AND state=? GROUP BY district"
-    query2 = "SELECT district,SUM(capacity) FROM location NATURAL JOIN furnace WHERE id in (SELECT id FROM products WHERE metal=? AND state=?) GROUP BY district"
+    query1 = "SELECT district,SUM(weight) AS total FROM `products` NATURAL JOIN location WHERE metal=? AND state=? GROUP BY district"
+    query2 = "SELECT district,SUM(capacity) AS total FROM location NATURAL JOIN furnace WHERE id in (SELECT id FROM products WHERE metal=? AND state=?) GROUP BY district"
 
     try {
         productList = await db.query(query1, [metal, "Existing"])
@@ -143,7 +143,7 @@ exports.getRawMaterialData = async function (req, res) {     //Raw Materials
 
 
     // query1 = "SELECT district,SUM(weight) FROM `products` NATURAL JOIN location WHERE metal=? AND state=? GROUP BY district"
-    query2 = "SELECT district,SUM(metal_usage) FROM `raw_materials` NATURAL JOIN location WHERE metal=? GROUP BY district"
+    query2 = "SELECT district,SUM(metal_usage) AS total FROM `raw_materials` NATURAL JOIN location WHERE metal=? GROUP BY district"
 
     try {
         // productList=await db.query(query1,[metal,"Existing"])
@@ -175,8 +175,8 @@ exports.getMetalCategories = async function (req, res) {  //Metal Categories
     }
 
 
-    query = "SELECT district,COUNT(name) FROM company NATURAL JOIN location JOIN raw_materials USING (id) WHERE metal=? GROUP BY district"
-    query2 = "SELECT district,COUNT(name) FROM company NATURAL JOIN location JOIN raw_materials USING (id) WHERE metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? GROUP BY district"
+    query = "SELECT district,COUNT(name) AS total FROM company NATURAL JOIN location JOIN raw_materials USING (id) WHERE metal=? GROUP BY district"
+    query2 = "SELECT district,COUNT(name) AS total FROM company NATURAL JOIN location JOIN raw_materials USING (id) WHERE metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? OR metal=? GROUP BY district"
 
     try {
 
@@ -210,7 +210,7 @@ exports.getMachineryInvestmentData = async function (req, res) { //Machinery Inv
     }
 
 
-    query = "SELECT district,SUM(value)FROM location NATURAL JOIN machinery GROUP BY district"
+    query = "SELECT district,SUM(value) AS totalFROM location NATURAL JOIN machinery GROUP BY district"
 
     try {
 
@@ -239,7 +239,7 @@ exports.getTotalInvestment= async function(req,res){ //Total Investment
 
     
 
-    query1 = "SELECT district,SUM(building_value+land_value),SUM(raw_material+semi_finished+finished) FROM building_capital NATURAL JOIN land_capital JOIN working_captial USING (id) JOIN location USING (id) GROUP BY district"
+    query1 = "SELECT district,SUM(building_value+land_value) AS totalFixed,SUM(raw_material+semi_finished+finished) AS totalWorking FROM building_capital NATURAL JOIN land_capital JOIN working_captial USING (id) JOIN location USING (id) GROUP BY district"
     try {
         result = await db.query(query1)
         res.send({ 'code': 200, 'message': 'success', 'Data': result})
@@ -264,7 +264,7 @@ exports.getAvgProductionData = async function (req, res) { //Average Production 
     state = req.body.state
     product=req.body.product
 
-    query1 = "SELECT district,SUM(weight) FROM `products` NATURAL JOIN location WHERE product=? AND state=? GROUP BY district"
+    query1 = "SELECT district,SUM(weight) AS total FROM `products` NATURAL JOIN location WHERE product=? AND state=? GROUP BY district"
     try {
         result = await db.query(query1, [product, state])
         res.send({ 'code': 200, 'message': 'success', 'Data': result})
