@@ -187,7 +187,7 @@ exports.getMetalCategories = async function (req, res) {  //Metal Categories
         other = await db.query(query2, ["Stainless Steel", 'Magnesium', 'Copper', 'Zinc', 'LMS', 'High Carbon Steel', 'Manganese Steel', 'Other'])
 
         industryData = { "Brass": brass, "Aluminum": aluminum, "Iron": iron, "Cast Iron": castIron, "Other": other }
-        console.log(industryData)
+        // console.log(industryData)
 
         res.send({ 'code': 200, 'message': 'success', 'data': industryData })
 
@@ -210,7 +210,7 @@ exports.getMachineryInvestmentData = async function (req, res) { //Machinery Inv
     }
 
 
-    query = "SELECT district,SUM(value) AS totalFROM location NATURAL JOIN machinery GROUP BY district"
+    query = "SELECT district,SUM(value) AS total FROM location NATURAL JOIN machinery GROUP BY district"
 
     try {
 
