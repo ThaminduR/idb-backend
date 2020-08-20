@@ -111,10 +111,10 @@ exports.getProductionData = async function (req, res) {   //Production Data
         productList = await db.query(query1, [metal, "Existing"])
         furnaceList = await db.query(query2, [metal, "Existing"])
 
-        result = { "products": productList, "furnaces": furnaceList }
+        
 
 
-        res.send({ 'code': 200, 'message': 'success', 'data': productList })
+        res.send({ 'code': 200, 'message': 'success', "products": productList,"furnaces": furnaceList })
 
 
     } catch (error) {
@@ -251,7 +251,7 @@ exports.getTotalInvestment= async function(req,res){ //Total Investment
 
 }
 
-exports.getProductionData = async function (req, res) { //Average Production and Expected Production
+exports.getAvgProductionData = async function (req, res) { //Average Production and Expected Production
 
 
     try {
