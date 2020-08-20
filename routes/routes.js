@@ -15,7 +15,7 @@ router.post('/getFurnanceData', middleware.verifytoken, (req, res) => { Filter.g
 router.post('/getProductionData', middleware.verifytoken, (req, res) => { Filter.getProductionData(req,res) }) //Production Data
 router.post('/getRawMaterialData', middleware.verifytoken, (req, res) => { Filter.getRawMaterialData(req,res) })//Raw Materials
 router.post('/getAvgProductionData', middleware.verifytoken, (req, res) => { Filter.getProductionData(req,res) }) //Average Production and Expected Production
-router.post('/getgetMetalCategories', middleware.verifytoken, (req,res) => { Filter.getgetMetalCategories(req,res) })//Metal Categories
+router.post('/getMetalCategories', middleware.verifytoken, (req,res) => { Filter.getgetMetalCategories(req,res) })//Metal Categories
 router.post('/getMachineryInvestmentData', middleware.verifytoken, (req,res) => { Filter.getMachineryInvestmentData(req,res) }) //Machinery Investment
 router.post('/getTotalInvestment', middleware.verifytoken, (req,res) => { Filter.getTotalInvestment(req,res) }) //Total Investment
 
