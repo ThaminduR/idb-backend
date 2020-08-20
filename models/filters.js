@@ -111,10 +111,10 @@ exports.getProductionData = async function (req, res) {   //Production Data
         productList = await db.query(query1, [metal, "Existing"])
         furnaceList = await db.query(query2, [metal, "Existing"])
 
-        
 
 
-        res.send({ 'code': 200, 'message': 'success', "products": productList,"furnaces": furnaceList })
+
+        res.send({ 'code': 200, 'message': 'success', "products": productList, "furnaces": furnaceList })
 
 
     } catch (error) {
@@ -229,7 +229,7 @@ exports.getMachineryInvestmentData = async function (req, res) { //Machinery Inv
 
 }
 
-exports.getTotalInvestment= async function(req,res){ //Total Investment
+exports.getTotalInvestment = async function (req, res) { //Total Investment
     try {
         db = new database();
     } catch (error) {
@@ -237,12 +237,12 @@ exports.getTotalInvestment= async function(req,res){ //Total Investment
         res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
     }
 
-    
+
 
     query1 = "SELECT district,SUM(building_value+land_value) AS totalFixed,SUM(raw_material+semi_finished+finished) AS totalWorking FROM building_capital NATURAL JOIN land_capital JOIN working_captial USING (id) JOIN location USING (id) GROUP BY district"
     try {
         result = await db.query(query1)
-        res.send({ 'code': 200, 'message': 'success', 'Data': result})
+        res.send({ 'code': 200, 'message': 'success', 'Data': result })
     } catch (error) {
         console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
@@ -262,12 +262,21 @@ exports.getAvgProductionData = async function (req, res) { //Average Production 
     }
 
     state = req.body.state
-    product=req.body.product
+    product = req.body.product
 
-    query1 = "SELECT district,SUM(weight) AS total FROM `products` NATURAL JOIN location WHERE product=? AND state=? GROUP BY district"
+    query1 = "SELECT district,SUM(weight) AS total FROM products NATURAL JOIN location WHERE product=? AND state=? GROUP BY district"
+    query2 = "SELECT district,SUM(weight) AS total FROM products NATURAL JOIN location WHERE state=? GROUP BY district"
     try {
-        result = await db.query(query1, [product, state])
-        res.send({ 'code': 200, 'message': 'success', 'Data': result})
+        if (product === "total") {
+            result = await db.query(query2, [state])
+            res.send({ 'code': 200, 'message': 'success', 'data': result })
+
+
+        } else {
+
+            result = await db.query(query1, [product, state])
+            res.send({ 'code': 200, 'message': 'success', 'data': result })
+        }
     } catch (error) {
         console.log(error)
         res.send({ 'code': 204, 'message': 'Error Occured.Try Again' })
