@@ -267,7 +267,7 @@ exports.getAvgProductionData = async function (req, res) { //Average Production 
     query1 = "SELECT district,SUM(weight) AS total FROM products NATURAL JOIN location WHERE product=? AND state=? GROUP BY district"
     query2 = "SELECT district,SUM(weight) AS total FROM products NATURAL JOIN location WHERE state=? GROUP BY district"
     try {
-        if (product === "total") {
+        if (product === "Total") {
             result = await db.query(query2, [state])
             res.send({ 'code': 200, 'message': 'success', 'data': result })
 
