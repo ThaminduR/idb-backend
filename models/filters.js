@@ -1,5 +1,112 @@
 const database = require('../config/db');
+const { query } = require('express');
 
+
+exports.getFilteredData = async function (req, res) {
+    try {
+        db = new database();
+
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+    district = req.body.district
+    scale = req.body.scale
+
+    metal = req.body.metal
+    metalrange = req.body.metalrange
+    consumption = req.body.metalcapacity
+
+    furnace = req.body.furnace
+    furnacerange = req.body.furnacerange
+    capacity = req.body.furnacecapacity
+
+    product = req.body.product
+    producterange = req.body.producterange
+    quantity = req.body.productcapacity
+
+    market = req.body.market
+
+    if(district===''){
+        district=null
+    }
+    if(scale===''){
+        scale=null
+    }
+
+    if (market==="Local"){
+        parameters=[1,null,district,scale]
+    }else if(market==="Export"){
+        parameters=[,district,scale]
+    }else if(market=="Both"){
+        parameters=[1,1,district,scale]
+    }else{
+        parameters=[null,null,district,scale]
+    }
+    console.log(parameters)
+    
+
+
+
+    try {
+        var query = "SELECT id,name FROM company NATURAL JOIN location WHERE id IN (SELECT id FROM company NATURAL JOIN products_sold WHERE (local_retails+local_companies)>=COALESCE(?,local_retails+local_companies) AND foreigh_market>=COALESCE(?,foreigh_market) ) AND district=COALESCE(?,district) AND id IN (SELECT id FROM company NATURAL JOIN company_category WHERE turnover_category=COALESCE(?,turnover_category))"
+
+
+
+        if (metal != '') {
+            query +=" AND id in SELECT id FROM raw_materials WHERE metal=?"
+            parameters.push(metal)
+
+            if (consumption != '') {
+                parameters.push(consumption)
+                if (metalrange === "Greater")
+                    query += " AND consumption > ?"
+            } else {
+                query += " AND consumption < ?"
+            }
+        }
+        
+        if (furnace != '') {
+            parameters.push(furnace)
+            query +=" AND id in SELECT id FROM furnace WHERE furnace_type=?"
+
+            if (capacity != '') {
+                parameters.push(capacity)
+                if (furnacerange === "Greater")
+                    query += " AND capacity > ?"
+            } else {
+                query += " AND capacity < ?"
+            }
+        }
+        // console.log(query)
+        if (product != '') {
+            parameters.push(product)
+            query +=" AND id in SELECT id FROM products WHERE product=?"
+
+            if (quantity != '') {
+                parameters.push(quantity)
+                if (producterange === "Greater")
+                    query += " AND units > ?"
+            } else {
+                query += " AND units < ?"
+            }
+
+
+        }
+
+        result=await db.query(query,parameters)
+        
+        console.log(result)
+
+        res.send({'code':200,'message':'Success','data':result})
+        
+
+
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+}
 
 exports.getFurnanceData = async function (req, res) {  //Furnace Capacity
     try {

@@ -18,5 +18,5 @@ router.post('/getAvgProductionData', middleware.verifytoken, (req, res) => { Fil
 router.post('/getMetalCategories', middleware.verifytoken, (req,res) => { Filter.getMetalCategories(req,res) })//Metal Categories
 router.post('/getMachineryInvestmentData', middleware.verifytoken, (req,res) => { Filter.getMachineryInvestmentData(req,res) }) //Machinery Investment
 router.post('/getTotalInvestment', middleware.verifytoken, (req,res) => { Filter.getTotalInvestment(req,res) }) //Total Investment
-
+router.post('/getFilteredData', middleware.verifytoken, (req,res) => { Filter.getFilteredData(req,res) }) //Total Investment
 module.exports = router;
