@@ -27,48 +27,79 @@ exports.getFilteredData = async function (req, res) {
 
     market = req.body.market
 
+    if(district===''){
+        district=null
+    }
+    if(scale===''){
+        scale=null
+    }
+    parameters=[district,scale]
+
+    if (market==="Local"){
+        parameters=[district,scale,1,null]
+    }else if(market==="Export"){
+        parameters=[district,scale,null,1]
+    }else if(market=="Both"){
+        parameters=[district,scale,1,1]
+    }else{
+        parameters=[district,scale,null,null]
+    }
+    
+
 
 
     try {
-        var query = "SELECT name FROM company NATURAL JOIN location WHERE id IN (SELECT id FROM company NATURAL JOIN products_sold WHERE (local_retails+local_companies)>COALESCE(?,local_retails+local_companies) AND foreigh_market>COALESCE(?,foreigh_market) ) AND district=COALESCE(?,district) AND id IN (SELECT id FROM company NATURAL JOIN company_category WHERE turnover_category=COALESCE(?,turnover_category))"
+        var query = "SELECT id,name FROM company NATURAL JOIN location WHERE id IN (SELECT id FROM company NATURAL JOIN products_sold WHERE (local_retails+local_companies)>=COALESCE(?,local_retails+local_companies) AND foreigh_market>=COALESCE(?,foreigh_market) ) AND district=COALESCE(?,district) AND id IN (SELECT id FROM company NATURAL JOIN company_category WHERE turnover_category=COALESCE(?,turnover_category))"
 
 
 
         if (metal != '') {
-            query = +"AND id in SELECT id FROM raw_materials WHERE metal=?"
+            query +=" AND id in SELECT id FROM raw_materials WHERE metal=?"
+            parameters.push(metal)
 
             if (consumption != '') {
-                if (metalrange = "Greater Than")
+                parameters.push(consumption)
+                if (metalrange === "Greater")
                     query += " AND consumption > ?"
             } else {
                 query += " AND consumption < ?"
             }
         }
-
+        
         if (furnace != '') {
-            query = +"AND id in SELECT id FROM furnace WHERE furnace_type=?"
+            parameters.push(furnace)
+            query +=" AND id in SELECT id FROM furnace WHERE furnace_type=?"
 
             if (capacity != '') {
-                if (furnacerange = "Greater Than")
+                parameters.push(capacity)
+                if (furnacerange === "Greater")
                     query += " AND capacity > ?"
             } else {
                 query += " AND capacity < ?"
             }
         }
-
+        // console.log(query)
         if (product != '') {
-            query = +"AND id in SELECT id FROM products WHERE product=?"
+            parameters.push(product)
+            query +=" AND id in SELECT id FROM products WHERE product=?"
 
             if (quantity != '') {
-                if (producterange = "Greater Than")
+                parameters.push(quantity)
+                if (producterange === "Greater")
                     query += " AND units > ?"
             } else {
                 query += " AND units < ?"
             }
 
-            console.log(query)
+
         }
 
+        result=await db.query(query,parameters)
+        
+        console.log(result)
+
+        res.send({'code':200,'message':'Success','data':result})
+        
 
 
 
@@ -78,6 +109,7 @@ exports.getFilteredData = async function (req, res) {
 
 
 
+        console.log(query)
     } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
