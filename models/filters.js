@@ -1,5 +1,88 @@
 const database = require('../config/db');
+const { query } = require('express');
 
+
+exports.getFilteredData = async function (req, res) {
+    try {
+        db = new database();
+
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+    district = req.body.district
+    scale = req.body.scale
+
+    metal = req.body.metal
+    metalrange = req.body.metalrange
+    consumption = req.body.metalcapacity
+
+    furnace = req.body.furnace
+    furnacerange = req.body.furnacerange
+    capacity = req.body.furnacecapacity
+
+    product = req.body.product
+    producterange = req.body.producterange
+    quantity = req.body.productcapacity
+
+    market = req.body.market
+
+
+
+    try {
+        var query = "SELECT name FROM company NATURAL JOIN location WHERE id IN (SELECT id FROM company NATURAL JOIN products_sold WHERE (local_retails+local_companies)>COALESCE(?,local_retails+local_companies) AND foreigh_market>COALESCE(?,foreigh_market) ) AND district=COALESCE(?,district) AND id IN (SELECT id FROM company NATURAL JOIN company_category WHERE turnover_category=COALESCE(?,turnover_category))"
+
+
+
+        if (metal != '') {
+            query = +"AND id in SELECT id FROM raw_materials WHERE metal=?"
+
+            if (consumption != '') {
+                if (metalrange = "Greater Than")
+                    query += " AND consumption > ?"
+            } else {
+                query += " AND consumption < ?"
+            }
+        }
+
+        if (furnace != '') {
+            query = +"AND id in SELECT id FROM furnace WHERE furnace_type=?"
+
+            if (capacity != '') {
+                if (furnacerange = "Greater Than")
+                    query += " AND capacity > ?"
+            } else {
+                query += " AND capacity < ?"
+            }
+        }
+
+        if (product != '') {
+            query = +"AND id in SELECT id FROM products WHERE product=?"
+
+            if (quantity != '') {
+                if (producterange = "Greater Than")
+                    query += " AND units > ?"
+            } else {
+                query += " AND units < ?"
+            }
+
+            console.log(query)
+        }
+
+
+
+
+
+
+
+
+
+
+    } catch (error) {
+        console.log(error);
+        res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
+    }
+}
 
 exports.getFurnanceData = async function (req, res) {  //Furnace Capacity
     try {
