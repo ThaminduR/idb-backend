@@ -33,17 +33,17 @@ exports.getFilteredData = async function (req, res) {
     if(scale===''){
         scale=null
     }
-    parameters=[district,scale]
 
     if (market==="Local"){
-        parameters=[district,scale,1,null]
+        parameters=[1,null,district,scale]
     }else if(market==="Export"){
-        parameters=[district,scale,null,1]
+        parameters=[,district,scale]
     }else if(market=="Both"){
-        parameters=[district,scale,1,1]
+        parameters=[1,1,district,scale]
     }else{
-        parameters=[district,scale,null,null]
+        parameters=[null,null,district,scale]
     }
+    console.log(parameters)
     
 
 
@@ -102,14 +102,6 @@ exports.getFilteredData = async function (req, res) {
         
 
 
-
-
-
-
-
-
-
-        console.log(query)
     } catch (error) {
         console.log(error);
         res.send({ 'code': 204, 'message': 'DATABASE ERROR.TRY AGAIN' })
