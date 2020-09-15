@@ -37,7 +37,7 @@ exports.getFilteredData = async function (req, res) {
     if (market === "Local") {
         parameters = [1, null, district, scale]
     } else if (market === "Export") {
-        parameters = [, district, scale]
+        parameters = [null, 1, district, scale]
     } else if (market == "Both") {
         parameters = [1, 1, district, scale]
     } else {
@@ -54,24 +54,26 @@ exports.getFilteredData = async function (req, res) {
 
 
         if (metal != '') {
-            query += " AND id in (SELECT id FROM raw_materials WHERE metal=?"
+            query += " AND id IN (SELECT id FROM raw_materials WHERE metal=?"
             parameters.push(metal)
 
-            if (consumption == '') {query +=')' }
+            if (consumption == '') { query += ')' }
             if (consumption != '') {
                 parameters.push(consumption)
                 if (metalrange === "Greater")
-                    query += " AND consumption > ?)"
-            } else if(metalrange === "Lesser") {
-                query += " AND consumption < ?)"
+                    query += " AND metal_usage > ?)"
+            } else if (metalrange === "Lesser") {
+                query += " AND metal_usage < ?)"
             }
         }
-        if (furnace == '') {query +=')' }
+
         if (furnace != '') {
             parameters.push(furnace)
-            query += " AND id in SELECT id FROM furnace WHERE furnace_type=?"
+            query += " AND id IN (SELECT id FROM furnace WHERE furnace_type=?"
 
-            if (capacity != '') {
+            if (capacity == '') { query += ')' }
+
+            if (capacity >0) {
                 parameters.push(capacity)
                 if (furnacerange === "Greater")
                     query += " AND capacity > ?)"
@@ -79,13 +81,13 @@ exports.getFilteredData = async function (req, res) {
                 query += " AND capacity < ?)"
             }
         }
-        // console.log(query)
-        if (product == '') {query +=')' }
+        console.log(query)
+
         if (product != '') {
             parameters.push(product)
-            query += " AND id in SELECT id FROM products WHERE product=?"
-
-            if (quantity != '') {
+            query += " AND id in (SELECT id FROM products WHERE product=?"
+            if (quantity == '') { query += ')' }
+            if (quantity > 0) {
                 parameters.push(quantity)
                 if (producterange === "Greater")
                     query += " AND units > ?)"
@@ -95,6 +97,9 @@ exports.getFilteredData = async function (req, res) {
 
 
         }
+        console.log(query)
+
+        console.log(parameters)
 
         result = await db.query(query, parameters)
 
