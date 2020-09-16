@@ -43,7 +43,7 @@ exports.getFilteredData = async function (req, res) {
     } else {
         parameters = [null, null, district, scale]
     }
-    console.log(parameters)
+    // console.log(parameters)
 
 
 
@@ -57,8 +57,8 @@ exports.getFilteredData = async function (req, res) {
             query += " AND id IN (SELECT id FROM raw_materials WHERE metal=?"
             parameters.push(metal)
 
-            if (consumption == '') { query += ')' }
-            if (consumption != '') {
+            if (consumption == 0) { query += ')' }
+            if (consumption > 0) {
                 parameters.push(consumption)
                 if (metalrange === "Greater")
                     query += " AND metal_usage > ?)"
@@ -71,7 +71,7 @@ exports.getFilteredData = async function (req, res) {
             parameters.push(furnace)
             query += " AND id IN (SELECT id FROM furnace WHERE furnace_type=?"
 
-            if (capacity == '') { query += ')' }
+            if (capacity == 0) { query += ')' }
 
             if (capacity >0) {
                 parameters.push(capacity)
@@ -81,12 +81,12 @@ exports.getFilteredData = async function (req, res) {
                 query += " AND capacity < ?)"
             }
         }
-        console.log(query)
+        // console.log(query)
 
         if (product != '') {
             parameters.push(product)
             query += " AND id in (SELECT id FROM products WHERE product=?"
-            if (quantity == '') { query += ')' }
+            if (quantity == 0) { query += ')' }
             if (quantity > 0) {
                 parameters.push(quantity)
                 if (producterange === "Greater")
@@ -97,13 +97,13 @@ exports.getFilteredData = async function (req, res) {
 
 
         }
-        console.log(query)
+        // console.log(query)
 
-        console.log(parameters)
+        // console.log(parameters)
 
         result = await db.query(query, parameters)
 
-        console.log(result)
+        // console.log(result)
 
         res.send({ 'code': 200, 'message': 'Success', 'data': result })
 
