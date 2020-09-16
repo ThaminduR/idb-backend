@@ -22,7 +22,7 @@ exports.getFilteredData = async function (req, res) {
     capacity = req.body.furnacecapacity
 
     product = req.body.product
-    producterange = req.body.producterange
+    productrange = req.body.productrange
     quantity = req.body.productcapacity
 
     market = req.body.market
@@ -51,51 +51,80 @@ exports.getFilteredData = async function (req, res) {
     try {
         var query = "SELECT id,name FROM company NATURAL JOIN location WHERE id IN (SELECT id FROM company NATURAL JOIN products_sold WHERE (local_retails+local_companies)>=COALESCE(?,local_retails+local_companies) AND foreigh_market>=COALESCE(?,foreigh_market) ) AND district=COALESCE(?,district) AND id IN (SELECT id FROM company NATURAL JOIN company_category WHERE turnover_category=COALESCE(?,turnover_category))"
 
+        
 
 
         if (metal != '') {
-            query += " AND id IN (SELECT id FROM raw_materials WHERE metal=?"
+            query += " AND id IN (SELECT id FROM (SELECT id,SUM(metal_usage) AS metal_usage FROM raw_materials WHERE metal=? GROUP BY (id)) AS t1"
             parameters.push(metal)
 
-            if (consumption == 0) { query += ')' }
-            if (consumption > 0) {
-                parameters.push(consumption)
-                if (metalrange === "Greater")
-                    query += " AND metal_usage > ?)"
-            } else if (metalrange === "Lesser") {
-                query += " AND metal_usage < ?)"
+
+            if (consumption >= 0 && consumption!='') {
+                
+                if (metalrange === "Greater") {
+                    query += " WHERE metal_usage > ?)"
+                    parameters.push(consumption)
+                } else if (metalrange === "Less") {
+                    query += " WHERE metal_usage <= ?)"
+                    parameters.push(consumption)
+                } else {
+                    query += ')'
+                }
+            } else {
+                query += ')'
             }
         }
 
         if (furnace != '') {
             parameters.push(furnace)
-            query += " AND id IN (SELECT id FROM furnace WHERE furnace_type=?"
+           // query += " AND id IN (SELECT id FROM furnace WHERE furnace_type=?"
+            query +=" AND id IN (SELECT id FROM (SELECT id,SUM(capacity) AS capacity FROM furnace WHERE furnace_type=? GROUP BY (id)) AS t2"
 
-            if (capacity == 0) { query += ')' }
 
-            if (capacity >0) {
-                parameters.push(capacity)
-                if (furnacerange === "Greater")
-                    query += " AND capacity > ?)"
-            } else if (furnacerange === "Lesser") {
-                query += " AND capacity < ?)"
+
+            if (capacity >= 0 && capacity!='') {
+                
+                if (furnacerange === "Greater") {
+                    query += " WHERE capacity > ?)"
+                    parameters.push(capacity)
+                } else if (furnacerange === "Less") {
+                    query += " WHERE capacity <= ?)"
+                    parameters.push(capacity)
+                } else {
+                    query += ')'
+                }
+            } else {
+                query += ')'
             }
         }
+
         // console.log(query)
 
         if (product != '') {
             parameters.push(product)
-            query += " AND id in (SELECT id FROM products WHERE product=?"
-            if (quantity == 0) { query += ')' }
-            if (quantity > 0) {
-                parameters.push(quantity)
-                if (producterange === "Greater")
-                    query += " AND units > ?)"
-            } else if (producterange === "LESSER") {
-                query += " AND units < ?)"
+
+            query +=" AND id IN (SELECT id FROM (SELECT id,SUM(units) AS units FROM products WHERE product=? GROUP BY (id)) AS t3"
+
+
+            //query += " AND id in (SELECT id FROM products WHERE product=?"
+            console.log(productrange)
+            if (quantity >= 0 && quantity!="") {
+                
+                if (productrange === "Greater") {
+                    query += " WHERE units > ?)"
+                    parameters.push(quantity)
+                } else if (productrange === "Less") {
+                    query += " WHERE units <= ?)"
+                    parameters.push(quantity)
+                } else {
+                    query += ')'
+                }
+
+
+
+            } else {
+                query += ')'
             }
-
-
         }
         // console.log(query)
 
